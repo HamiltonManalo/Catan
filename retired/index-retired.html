@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+		<link href="css/board.css" rel="stylesheet" type="text/css">
+
+		<title>Catan</title>
+	</head>
+	<body>
+		<!-- Debugger Tools -->
+		<div class="debugger-tools" id="debugger-tools">
+			<!-- <button id="generate-board" class="btn" onclick="gameBoard.generate()">Generate Board</button> -->
+			<div>
+			<ul id="pathTest"> </ul>
+			<button id='pt'>Log the Path</button>
+
+			<ul id="rolls"> </ul>
+			<button id='roll'>Roll the D!</button>
+
+			<ul id="pieceTest"> </ul>
+			<button id='checkBoard'>Check for pieces!</button>
+
+			<button id='conTest'> Test ya Cons son </button>
+			<button id='createPlayers'>Create Players</button>
+			<button id='getBoard'>get board</button>
+		</div>
+			<div class="group">
+				<p>Robber Location:</p>
+				<input id="move-robber" type="number" min="0" class="form" placeholder="TileID" />
+				<button id="move-robber-submit" class="btn">Update</button>
+			</div>
+			<div class="group">
+				<p>Road New Owner:</p>
+				<input id="road-id" type="number" min="0" class="form" placeholder="RoadID" />
+				<select id="road-player" class="form">
+					<option value="0">Player0</option>
+					<option value="1">Player1</option>
+					<option value="2">Player2</option>
+					<option value="3">Player3</option>
+					<option value="999">None</option>
+				</select> 
+				<button id="road-submit" class="btn">Update</button>
+			</div>
+			<div class="group">
+				<p>Building New Owner:</p>
+				<input id="building-id" type="number" min="0" class="form" placeholder="BuildingID" />
+				<select id="building-player" class="form">
+					<option value="0">Player0</option>
+					<option value="1">Player1</option>
+					<option value="2">Player2</option>
+					<option value="3">Player3</option>
+					<option value="999">None</option>
+				</select> 
+				<button id="building-submit" class="btn">Update</button>
+			</div>
+		</div>
+		
+		<!-- Game Setup -->
+		<div class="game-setup" id="game-setup">
+			<h2>Settlers of Catan</h2>
+			<hr/>
+			<p>How many players?</p>
+			<select class="game-setup-form" id="num-players">
+				<option value="2">2 Players</option>
+				<option value="3" selected="selected">3 Players</option>
+				<option value="4">4 Players</option>
+			</select>
+			<button id="startGame" class="game-setup-btn">Start Game</button>
+		</div>
+
+
+		<!-- Gameboard Origin -->
+		<div class="origin" id="origin"></div>
+
+		<!-- Game Status -->
+		<div class="game-status" id="game-status">
+			<p><strong>Rolling to determine placement order</strong></p>
+		</div>
+
+		<!-- Dice Roller -->
+		<div class="dice-roller" id="dice-roller">
+			<button class="dice-roller-btn" id="dice-roller-btn">Roll</button>
+			<div class="dice-roller-title" id="dice-roller-title"></div>
+			<div id="die-yellow" class="die die-yellow">
+				<div class="die-cube">
+					<div class="die-face die-face-front">
+						<div></div>
+					</div>
+					<div class="die-face die-face-back">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-left">
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-right">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-top">
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-bottom">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+			<div id="die-red" class="die die-red">
+				<div class="die-cube">
+					<div class="die-face die-face-front">
+						<div></div>
+					</div>
+					<div class="die-face die-face-back">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-left">
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-right">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-top">
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<div class="die-face die-face-bottom">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+			</div>
+			<div class="dice-mask"></div>
+		</div>
+
+		// <!-- <script src="js/jquery-3.1.1.min.js" type="text/javascript"></script>
+		// <script src="js/lodash.4.17.2.js" type="text/javascript"></script>
+
+		// <script src="js/global-variables.js" type="text/javascript"></script>
+		// <script src="js/debugger-tools.js" type="text/javascript"></script>
+		// <script src="js/dice-rolling.js" type="text/javascript"></script>
+		// <script src="js/turn-zero.js" type="text/javascript"></script> -->
+		<script src="js/gameboard.js" type="text/javascript"></script>
+		<script src="js/render.js" type="text/javascript"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<!--<script src="./index.js"></script>;
+		<script src="./render.js"></script>;
+		<script src="http://code.jquery.com/jquery-1.11.1.js"> </script> -->
+		<script>  
+		var gameBoard = {};
+		// $(document).on('ready', function() {
+		// 	var userName = prompt("WOT IS YER NAME FUKBOI?");
+		// 	socket.emit('add user', userName);
+		// });
+		 var socket = io();
+			
+		 $('#startGame').click(function(){
+		 	console.log('Calling Generate board')
+		 	socket.emit('generateboard')
+		 });
+		 $('#roll').click(function(){
+		 		console.log('on click successful')
+		 		 	socket.emit('rollRequest')
+		 		 });
+
+		 	socket.on('rollRequest', function(roll){
+		 			$('#rolls').append($('<li>').text(roll));
+		 	});
+
+		 socket.on('login', function(msg){
+		 	$('#rolls').append($('<li>').text(msg.msg))
+		 });
+
+		 // Import gameBoard Object
+			 $('#getBoard').click(function() { 
+			 	console.log('get board called')
+			 	socket.emit('generateboard');
+			 	socket.emit('import board')
+			 });
+
+			 socket.on('send board', function(board) { 
+		 		console.log('Board received, Cap\'n')
+		 		gameBoard = JSON.parse(board);
+		 		return board;
+			 }) 
+		 $('#createPlayers').click(function(){
+		 	console.log("creating Players");
+		 	var num = prompt('How Many Players?');
+		 	console.log(3)
+
+		 	socket.emit('numplayers', Number(3))
+		 	return false;
+		 	})
+		 	
+		 	socket.on('numplayers', function(msg){
+				$('#rolls').append($('<li>').text(msg));	
+		 		console.log('players created emit')
+	 		});
+			
+			// socket.on('checkBoard', function(msg){
+			// 	console.log(JSON.parse(msg));
+			// 	$('#rolls').append($('<li>').text(JSON.stringify.(msg));
+			// });
+
+			$('#checkBoard').click(function(){
+				console.log('piece test click');
+				socket.emit('checkBoard', function(){});
+				return false;
+			});
+
+			$('#pt').click(function(){
+				var tileId = prompt('What ID?')
+				console.log('PT Called! ID ' + tileId);
+				socket.emit('getTileElement',tileId)
+			})
+
+			socket.on('tileinfo', function(tile) {
+				console.log(tile)
+				return $(tile)
+			});
+
+			/* tileId test */
+			$('#conTest').click(function(){
+				console.log("conTest called");
+				socket.emit('constructorTest', function(){})
+			});
+		</script>
+	</body>
+</html>
