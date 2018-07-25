@@ -1,0 +1,948 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"use",
+				"username"
+			],
+			[
+				"mys",
+				"mysteryNumberObject"
+			],
+			[
+				"originro",
+				"originRoadID"
+			],
+			[
+				"gae",
+				"gameBoard"
+			],
+			[
+				"next",
+				"nextTile"
+			],
+			[
+				"recent",
+				"mostRecentTile"
+			],
+			[
+				"originT",
+				"originTileID"
+			],
+			[
+				"id",
+				"id"
+			],
+			[
+				"genera",
+				"generateBoard"
+			],
+			[
+				"ID",
+				"ID"
+			],
+			[
+				"debugg",
+				"debuggerTools"
+			],
+			[
+				"built",
+				"builtSecond"
+			],
+			[
+				"placemen",
+				"placementOrder"
+			],
+			[
+				"check",
+				"checkDuplicates"
+			],
+			[
+				"inti",
+				"initializeP"
+			],
+			[
+				"num",
+				"numPlayers"
+			],
+			[
+				"player",
+				"playerArray"
+			],
+			[
+				"get",
+				"getElementById"
+			],
+			[
+				"bacl",
+				"background-color"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"siz",
+				"font-size"
+			],
+			[
+				"alig",
+				"vertical-align"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/game-logic/player-cards.js",
+			"settings":
+			{
+				"buffer_size": 2292,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/game-logic/config.js",
+			"settings":
+			{
+				"buffer_size": 4180,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/game-logic/cons.js",
+			"settings":
+			{
+				"buffer_size": 6539,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/game-logic/coordinates.js",
+			"settings":
+			{
+				"buffer_size": 170,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/game-logic/helpers.js",
+			"settings":
+			{
+				"buffer_size": 352,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/main/index.js",
+			"settings":
+			{
+				"buffer_size": 6043,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/game-logic/gameboard.js",
+			"settings":
+			{
+				"buffer_size": 24429,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/debugger-tools.js",
+			"settings":
+			{
+				"buffer_size": 6730,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "app/database/dbFunc.js",
+			"settings":
+			{
+				"buffer_size": 1066,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/newUser.html",
+			"settings":
+			{
+				"buffer_size": 1146,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/index.html",
+			"settings":
+			{
+				"buffer_size": 7612,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/css/board.css",
+			"settings":
+			{
+				"buffer_size": 12280,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\t// $(function(){\n// \t$('form').on('submit', function(event){\n// \t\tconsole.log('post called')\n// \t\tevent.preventDefault();\n// \t\tlet form = $(this);\n// \t\tconsole.log(form);\n// \t\tlet userData = form.serialize();\n// \t\t$.ajax({\n// \t\t\ttype: 'POST',\n// \t\t\turl: '/newUser',\n// \t\t\tdata: userData,\n// \t\t}).done(function(userData){\n// \t\t\tconsole.log('done function called');\n// \t\t});\n// \t});\n// });",
+			"file": "public/js/newUser.js",
+			"file_size": 402,
+			"file_write_time": 131549851046818141,
+			"settings":
+			{
+				"buffer_size": 388,
+				"line_ending": "Windows",
+				"name": "$.('form')"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 369.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 171.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Hamilton/Documents/coding/catan server current",
+		"/C/Users/Hamilton/Documents/coding/catan server current/app",
+		"/C/Users/Hamilton/Documents/coding/catan server current/app/database",
+		"/C/Users/Hamilton/Documents/coding/catan server current/retired"
+	],
+	"file_history":
+	[
+		"/C/Users/Hamilton/Documents/coding/catan server current/public/login.html",
+		"/C/Users/Hamilton/Documents/coding/catan server current/public/render.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/Catan.sublime-project",
+		"/C/Users/Hamilton/Documents/coding/catan server current/gameboard.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/index.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/helpers.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/board.css",
+		"/C/Users/Hamilton/Documents/coding/catan server current/coordinates.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/cons.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/config.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/player-cards.js",
+		"/C/Users/Hamilton/Documents/coding/catan server current/index.html",
+		"/C/Users/Hamilton/Documents/coding/simple consign/simple consign",
+		"/C/Users/Hamilton/Documents/coding/js-minicamp-homework-3/exercises.js",
+		"/C/Users/Hamilton/Documents/coding/catan server/player-cards.js",
+		"/D/Program Files/NodeJS/settlers-of-catan/js/player-cards.js",
+		"/D/Program Files/NodeJS/Catan Server/gameboard-initialtiles.js",
+		"/D/Program Files/NodeJS/Catan Server/coordinates.js",
+		"/D/Program Files/NodeJS/Catan Server/api_test.html",
+		"/D/Program Files/NodeJS/Catan Server/tile.js",
+		"/D/Program Files/NodeJS/Catan Server/config.js",
+		"/D/Program Files/NodeJS/Catan Server/cons.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/settlers-of-catan/catan server/index.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/settlers-of-catan/catan server/gameboard.js",
+		"/D/Program Files/NodeJS/settlers-of-catan/js/gameboard.js",
+		"/C/Users/Hamilton/AppData/Roaming/Sublime Text 2/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/settlers-of-catan/js/gameboard.js",
+		"/D/Program Files/NodeJS/cmo/constructors.js",
+		"/D/Program Files/NodeJS/script_test.js",
+		"/D/Program Files/NodeJS/chat.html",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/player-cards.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/gameboard.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/gamerules.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/dice-rolling.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/turn-zero.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/debugger-tools.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/triangles.js",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/index.html",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/README.md",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/gamerules.JS",
+		"/C/Users/Hamilton/Documents/coding/PROTECT FROM RESET.JS",
+		"/C/Users/Hamilton/Documents/coding/settlers-of-catan/js/catan.js",
+		"/C/Users/Hamilton/Desktop/catan.html",
+		"/C/Users/Hamilton/Documents/coding/Road Test/index.html",
+		"/C/Users/Hamilton/Documents/test.html",
+		"/C/Users/Hamilton/Documents/test-css.css",
+		"/C/Users/Hamilton/Documents/test.js",
+		"/C/Users/Hamilton/Documents/boilerplate/html boilerplate",
+		"/D/node_modules/mongodb/package.json",
+		"/C/Users/Hamilton/AppData/Roaming/Sublime Text 2/Packages/User/JavaScript.sublime-settings"
+	],
+	"find":
+	{
+		"height": 32.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"gameBoard",
+			"\\",
+			": ",
+			"{}",
+			"roads",
+			"start",
+			"generateboard",
+			"socket",
+			"\t\t \t\n",
+			"players",
+			"player",
+			"game-setup-",
+			"select-game",
+			"getboard",
+			"startgame()",
+			"generate",
+			"game-setup-btn",
+			"game-setyo0vtb",
+			"startgame",
+			"getBoard",
+			"get",
+			"getboard",
+			"game-setup",
+			"getboard",
+			"startgame",
+			"instructorData.",
+			"var",
+			"let",
+			"GET",
+			"Get",
+			"GET",
+			"ge",
+			"Get",
+			"=",
+			"this",
+			"\"",
+			"numbers",
+			"\"",
+			"==",
+			"]",
+			"originRoad",
+			"tileABuildings",
+			"ocean",
+			"tile",
+			"building",
+			"road",
+			"new Road",
+			"new road",
+			"console.log",
+			"tiles[",
+			"originID",
+			"gameBoard",
+			"mostRecentTile",
+			"mostrecenttile",
+			"new road",
+			"mostRecentTile",
+			"gb",
+			"console.log",
+			"mostrecenttile",
+			"new road",
+			"lookup",
+			"\n    ",
+			"lookupTile",
+			"lookupTile(tileB)",
+			"loookup",
+			"gt.",
+			"gameBoard.mostRecentTile",
+			"Chit\nChit",
+			"Chit",
+			"chit",
+			"nexttile",
+			"lookup",
+			"tile",
+			"assignbuilding",
+			"assignbuildingsto",
+			"building",
+			"buildingA",
+			"buildingAId",
+			"var gr",
+			"roads",
+			"var tiles",
+			"lookupBuilding",
+			"road",
+			"console.log",
+			"buildings",
+			"building",
+			"\n    ",
+			"console.log(",
+			"buildings",
+			"building",
+			"var building",
+			"lookupbuilding",
+			"resource",
+			"getBuildingIdsFromResource",
+			"building.id",
+			"Building",
+			"building",
+			"assignbuildingstobuilding",
+			"resources",
+			"lookupbuilding",
+			"console.log",
+			"\n    ",
+			"origintile",
+			"new building",
+			"lookup",
+			"getBuildingIdsFromResource",
+			"var resource",
+			"resource ",
+			"origintile",
+			"gameboard.nexttile",
+			"originTile",
+			"connecttiles(",
+			"connecttile(",
+			"origintile",
+			"origintile ",
+			"origintile",
+			"originID",
+			"originid",
+			"generatetilesloop",
+			"origintile",
+			"connecttiles",
+			"connecttiles(",
+			"mostrecenttile",
+			"connectTiles(",
+			"prevTile",
+			"mostrecenttile",
+			" Building(",
+			" building("
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"/",
+			"var",
+			".placementOrder",
+			"placementOrder",
+			"sortPlayers();\n  \n  function checkDuplicates() {\n      \n    for(t = 0; t < numPlayers -2; t++) {\n      // Checks for triple duplicates if there are 3 or more players\n      if(playerArray[i].roll == playerArray[i + 1].roll && playerArray[i].roll == playerArray[i + 2].roll)\n        console.log(\"TRIPS!\")\n        playerArray[i + 2].roll  += roll()*.01;\n\n        playerArray[i + 1].roll += roll()*.01;\n    \n        playerArray[i].roll += roll()*.01;\n\n        sortPlayers()\n          }\n        }\n    // Checks if 2 players rolled duplicates\n    for(i = 0; i < numPlayers -1; i++) {\n      \n       if(playerArray[i].roll == playerArray[i + 1].roll) {\n        console.log(\"Reroll\")\n        playerArray[i + 1].roll += roll()*.01;\n      \n        playerArray[i].roll += roll()*.01; \n      \n        sortPlayers();\n      \n    }\n  } \n};\n\n\n\n\n\n\n \n\n\n// Bubble sorts player position in playerArray index for play order\nfunction sortPlayers() {\n for(t = 0; t < numPlayers -1; t++){\n  \n  for(j = 0; j < numPlayers; j++) {\n    \n      if(playerArray[j+1] != undefined && playerArray[j].roll < playerArray[j+1].roll) {\n      console.log('swapping players ' + playerArray[j].ID + \"with roll value\" + playerArray[j].roll + ' and ' + playerArray[j+1].ID + \"with roll value \" + playerArray[j+1].roll + \" On iteration \" + j)\n      let tempArr = playerArray[j];\n      playerArray[j] = playerArray[j+1];\n      playerArray[j+1] = tempArr;\n    \n      }\n    }\n  } \n};\n\n// checks for duplicate rolls ",
+			"j",
+			"join"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/game-logic/player-cards.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/game-logic/config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4180,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								595,
+								309
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/game-logic/cons.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6539,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/game-logic/coordinates.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 170,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/game-logic/helpers.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 352,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								151,
+								151
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/main/index.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6043,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1238,
+								1238
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2938.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/game-logic/gameboard.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 24429,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20098,
+								20098
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 12611.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "public/debugger-tools.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6730,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								537,
+								537
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/database/dbFunc.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1066,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								1066
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "public/newUser.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1146,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1053,
+								1053
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 28.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "public/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7612,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								299,
+								233
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4479.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "public/css/board.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12280,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 110.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "public/js/newUser.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 388,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								388,
+								388
+							]
+						],
+						"settings":
+						{
+							"auto_name": "$.('form')",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "Catan.sublime-project",
+	"replace":
+	{
+		"height": 59.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 487.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
