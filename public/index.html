@@ -12,7 +12,7 @@
 			<style> 
 			* { margin: 0; padding: border-box;}
 			body {font: 13px Helvetica, Arial; }
-			}
+			
 			button { padding: 10px; display: inline-block; vertical-align: middle; background: rgb(130, 224, 255); border: none; padding: 10px;}
 			#rolls {list-style-type: none; margin: 0; padding: 0;}
 			#rolls li {padding: 5px 10px;}
@@ -169,9 +169,9 @@
 			<div class="dice-mask"></div>
 		</div>
 
-		<script src="/debugger-tools.js" type="text/javascript"></script>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="/render.js"></script>;
+		<script src="/js/debugger-tools.js" type="text/javascript"></script>
+		<script src="/js/socket.io/socket.io.js"></script>
+		<script src="/js/render.js"></script>;
 		<script>  
 		var gameBoard = {};
 		// $(document).on('ready', function() {
@@ -193,11 +193,7 @@
 		 });
 
 		 // Import gameBoard Object
-			 $('#getBoard').click(function() { 
-			 	console.log('get board called');
-			 	socket.emit('generateboard');
-			 	socket.emit('import board');
-			 });
+			 
 
 			 socket.on('send board', function(board) { 
 		 		console.log('Board received, Cap\'n')

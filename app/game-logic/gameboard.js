@@ -37,28 +37,6 @@ function configuration(numRings) {
   this.maxResources = this.maxTiles - calcTilesPerRing(numRings);
   // Hard coding resources for now
 
-
-    /* 
-      Bad idea on dynamically generating resources
-     */
-
-  // this.resourceControlls = function(desert 1 =, ore = 3, brick = 3, wood = 4, sheep = 4) {
-
-  //   this.resourceArray = []
-
-  //   let resources = {
-  //     this.numDesert = desert;
-  //     this.numOre = ore;
-  //     this.numBrick = brick;
-  //     this.numWood = wood
-  //     this.numSheep = sheep
-  //   }
-  //   for(type in resources){
-  //         this.resourceArray.push(type)
-  //   }
-  //   return _.shuffle(this.resourceArray)
-  // }
-
   this.resourceTypes = _.shuffle(["desert","ore","ore","ore","brick","brick","brick","wood","wood","wood","wood","wheat","wheat","wheat","wheat","sheep","sheep","sheep","sheep"]);
   // Hard coding chits for now
   this.chits = [
@@ -119,35 +97,29 @@ function Coordinates(xPos,yPos,angle) {
   return  this.x, this.y, this.angle;
 }
 
+class boardMaker {
+    constructor() {
+        // Specify size of board in rings (min 3)
+        this.config = new configuration(3);
+        // Board Objects
+        this.tiles = {};
+        this.roads = {};
+        this.buildings = {};
+        // Keeping track of counts
+        this.numTiles = 0;
+        this.numRoads = 0;
+        this.numBuildings = 0;
+        // Keeping track of most recently created tiles
+        this.mostRecentTile = {};
 
-/*
-    Gameboard Object
-    ------------------------------------------------------
-*/
-var gameBoard = {
-  // Specify size of board in rings (min 3)
-  config: new configuration(3),
-  // Board Objects
-  tiles: {},
-  roads: {},
-  buildings: {},
-  // Keeping track of counts
-  numTiles: 0,
-  numRoads: 0,
-  numBuildings: 0,
-
-  // Keeping track of most recently created tiles
-  mostRecentTile: {},
-  // Build thyself muthafucka
-  generate: function() {
-    generateBoard();
-  },
-  // Keeping track of robber
-  // Initially gets assigned during board creation,
-  // when the desert tile is hit. This way the robber
-  // begins assigned to the desert
-  robber: {},
-};
+        // Keeping track of robber
+        // Initially gets assigned during board creation
+        // when the desert tile is hit. This way the robber
+        // begins assigned to the desert
+        this.robber = {};
+    }
+}
+;
 
 /*
     ROBBER Prototype
@@ -156,22 +128,7 @@ var gameBoard = {
 function Robber(desertTile) {
   // keeps track of robber's last updated location
   this.location = desertTile;
-  // Creates dom element for the robber
-  // this.createDOMNode = function() {
-  //   $origin = $('#origin');
-  //   $robberNode = $('<div />')
-  //     .addClass('robber')
-  //     .attr('id','robber')
-  //     .css({
-  //       bottom: this.location.display.y,
-  //       right: this.location.display.x
-  //     });
-  //   $origin.append($robberNode);
-  // };
-  // Returns DOM element for the robber
-  // this.getElement = function() {
-  //   return $('#robber');
-  // };
+
   // Assigns new location to the robber
   // Repositions robber visually
   this.newLocation = function(tile) {
@@ -185,9 +142,8 @@ function Robber(desertTile) {
       bottom: tile.display.y,
       right: tile.display.x
     });
-  }
+  };
 }
-
 
 /*
     CHIT Prototype
@@ -198,8 +154,6 @@ function Chit(chitId) {
   this.alpha = gameBoard.config.chits[chitId].alpha;
   this.probability = gameBoard.config.chits[chitId].probability;
 }
-
-
 
 /*
     TILE Prototype
@@ -279,8 +233,6 @@ function Tile(tileId) {
   gameBoard.numTiles++;
 }
 
-
-
 /*
     ROAD Prototype
     ------------------------------------------------------
@@ -305,24 +257,7 @@ function Road(tileA, tileB) {
   // Push into roads key for each tile
   tileA.roads.push(this.id);
   tileB.roads.push(this.id);
-  // function that returns corresponding dom node
-  // this.getElement = function() {
-  //   return $('.road[data-road-id="'+this.id+'"]');
-  // };
-
-  // function to change owner of building
-  // this.newOwner = function(newOwner) {
-  //   $element = this.getElement();
-
-  //   if (newOwner === null) {
-  //     this.owner = null;
-  //     $element.attr('data-owner','');
-  //   } else {
-  //     this.owner = newOwner;
-  //     $element.attr('data-owner',newOwner.id);
-  //   }
-  // };
-
+ 
   // Looks at all adjacent roads, at least 1 needs to be the same owner as active player, else return false
   this.checkAdjacent = function() {
     for (i = 0; i < this.adjacent.length; i ++) {
@@ -377,8 +312,6 @@ var getRoadAngle = function(tileA,tileB) {
   if (x2 > x1 && y2 < y1) { return "120deg"; }
 };
 
-
-
 /*
     BUILDING Prototype
     ------------------------------------------------------
@@ -404,18 +337,11 @@ function Building(tileA, tileB, tileC) {
   tileC.buildings.push(this.id);
   // function that returns corresponding dom node
   this.getElement = function() {
-    // return $('.building[data-building-id="'+this.id+'"]');
+
   };
   // function to change owner of building
   this.newOwner = function(newOwner) {
-    // $element = this.getElement();
-    // if (newOwner === null) {
-    //   this.owner = null;
-    //   $element.attr('data-owner','');
-    // } else {
-    //   this.owner = newOwner;
-    //   $element.attr('data-owner',newOwner.id);
-    // }
+ 
   };
   // Check for adjacent buildings. Should return false to build
   this.checkAdjacent = function() {
@@ -448,6 +374,7 @@ function Building(tileA, tileB, tileC) {
       }
     }
   };
+
   //Truthy return to validate T0 playment conditions
   this.build = function(player) {
     if (player.settlements >= 15) {
@@ -479,11 +406,7 @@ function Building(tileA, tileB, tileC) {
   
   // increment total
   gameBoard.numBuildings++;
-};
-
-
-
-
+}
 
 // Tile Connector
 var connectTiles = function(tileA,tileB) {
@@ -562,7 +485,6 @@ var generateTilesLoop = function() {
   }
 };
 
-
 // Handy Utility
 var getBuildingIdsFromResource = function(resourceId) {
   let resource = gameBoard.tiles['tile' + resourceId];
@@ -594,6 +516,7 @@ var assignBuildingsToBuilding = function(building) {
   if (adjacentB) {gameBoard.building.adjacent.push(adjacentB); }
   if (adjacentC) {gameBoard.building.adjacent.push(adjacentC); }
 };
+
 // Assigns adjacent buildings to each building on the board
 var assignBuildingsToBuildings = function() {
   var b = 0; // iterator
@@ -608,11 +531,12 @@ function bp(id) {
   let path = gameBoard.buildings['b' + id];
   return path
 }
-rp(0);
+
   function tp(id) { 
     let path = gameBoard.tiles['tile' + id];
     return path;
   }
+
   function bp(id) {
     let path = gameBoard.buildings['b' + id];
     return path;
@@ -622,6 +546,8 @@ rp(0);
     let path = gameBoard.roads['road' + id]
     return path;
   }
+
+
 // Assign 2 connected buildings to each road
 var assignBuildingsToRoad = function(road) {
   let tileABuildings = tp(road.tiles[0]).buildings;
@@ -640,7 +566,6 @@ var assignBuildingsToRoads = function() {
   }
 };
 
-
 // Pass in two tiles, return a road object if it exists
 var getRoadByTiles = function(tileA,tileB) {
   var r = 0;
@@ -654,9 +579,7 @@ var getRoadByTiles = function(tileA,tileB) {
     r++;
   }
 };
-// var test1 = true;
-//   if(test1) {console.log('ARTR ' + originRoad.adjacent); 
-//     test1 = false}
+
 // Assign adjacent roads to road
 var assignRoadsToRoad = function(originRoad) {
   var adjacentRoadsA = bp(originRoad.buildings[0]).roads;
@@ -673,85 +596,10 @@ var assignRoadsToRoads = function() {
     assignRoadsToRoad(gameBoard.roads["road"+r]);
   }
 };
-
-
-
-
-
-
-
-// creates DOM elements for each road, appends to #origin
-// var renderRoads = function() {
-//   var r = 0; // iterator
-//   while (r < gameBoard.numRoads) {
-//     var roadObject = roads["road"+r];
-//     $origin = $('#origin');
-//     $roadDOM = $('<div/>')
-//       .attr('data-road-id',roadObject.id)
-//       .addClass('road')
-//       .addClass('road-'+roadObject.display.angle)
-//       .css({
-//         bottom: roadObject.display.y,
-//         right: roadObject.display.x
-//       });
-//     // Inject into DOM
-//     $origin.append($roadDOM);
-//     r++;
-//   }
-// };
-
-// creates DOM elements for each building, appends to #origin
-// var renderBuildings = function() {
-//   var b = 0; // iterator
-//   while (b < gameBoard.numBuildings) {
-//     var buildingObject = buildings["b"+b];
-//     $origin = $('#origin');
-//     $buildingDOM = $('<div/>')
-//       .attr('data-building-id',buildingObject.id)
-//       .addClass('building')
-//       .css({
-//        bottom: buildingObject.display.y,
-//        right: buildingObject.display.x
-//       });
-//     // Inject into DOM
-//     $origin.append($buildingDOM);
-//     b++;
-//   }
-// };
-
-// creates DOM elements for each tile, appends to #origin
-// var renderTiles = function() {
-//   $origin = $("#origin");
-//   var n = 0; // iterator
-//   while (n < gameBoard.numTiles) {
-//     var tileObject = tiles["tile"+n];
-//     $tileDOM = $("<div />")
-//       .attr('data-tile-id',tileObject.id)
-//       .addClass('resource-tile')
-//       .addClass('resource-'+tileObject.resourceType)
-//       .css({
-//         bottom: tileObject.display.y,
-//         right: tileObject.display.x
-//       });
-//     if (tileObject.chit) {
-//       $chitValue = $("<span />").addClass("chit-value").text(tileObject.chit.value);
-//       $chitAlpha = $("<span />").addClass("chit-alpha").text(tileObject.chit.alpha);
-//       $chitProbability = $("<span />").addClass("chit-probability").text(tileObject.chit.probability);
-//       $tileDOM.append($chitAlpha, $chitValue, $chitProbability);
-
-//       if (tileObject.chit.value === 6 || tileObject.chit.value === 8) {
-//         $tileDOM.addClass("resource-hot");
-//       }
-//     }
-//     $origin.append($tileDOM);
-//     // Increment
-//     n++;
-//   }
-// };
-
+var gameBoard;
 // Generate the gameboard
-var generateBoard = function() {
-
+function generateBoard() {
+  gameBoard = new boardMaker();
   // Generate the tile network
   generateInitialTiles();
   generateTilesLoop();
@@ -765,14 +613,10 @@ var generateBoard = function() {
   // Assign 4 adjacent roads to each road
   assignRoadsToRoads();
 
-  // Create DOM elements for tiles, roads, and buildings
-  // renderTiles();
-  // renderRoads();
-  // renderBuildings();
-
   console.log("--------------------------------------");
   console.log("Gameboard Generated");
   console.log("--------------------------------------");
+  return gameBoard;
 };
 
-module.exports = gameBoard;
+module.exports = generateBoard;
