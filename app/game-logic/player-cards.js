@@ -77,3 +77,5 @@ var initializePlayers = function(numPlayers) {
   currentPlayerID = players[0];
   console.log("Current player is Player" + players[0].id);
 };
+
+module.exports = Player;

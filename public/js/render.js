@@ -1,6 +1,6 @@
 // creates DOM elements for each road, appends to #origin
 var renderRoads = function() {
-  var r = 0; // iterator
+  let r = 0; // iterator
   while (r < gameBoard.numRoads) {
     var roadObject = gameBoard.roads["road"+r];
     $origin = $('#origin');
@@ -8,6 +8,7 @@ var renderRoads = function() {
       .attr('data-road-id',roadObject.id)
       .addClass('road')
       .addClass('road-'+roadObject.display.angle)
+      .click(placeRoadEventGenerator(r, User.id))
       .css({
         bottom: roadObject.display.y,
         right: roadObject.display.x
@@ -20,13 +21,15 @@ var renderRoads = function() {
 
 // creates DOM elements for each building, appends to #origin
 var renderBuildings = function() {
-  var b = 0; // iterator
+  let b = 0; // iterator
   while (b < gameBoard.numBuildings) {
     var buildingObject = gameBoard.buildings["b"+b];
     $origin = $('#origin');
     $buildingDOM = $('<div/>')
       .attr('data-building-id',buildingObject.id)
       .addClass('building')
+      .click(placeTownEventGenerator(b, User.id)
+      )
       .css({
        bottom: buildingObject.display.y,
        right: buildingObject.display.x

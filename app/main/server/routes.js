@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const paths = require('path');
 const gameBoard = require("../../game-logic/gameboard.js");
+const Player = require('../../game-logic/player-cards.js');
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
 ///////////////////////////////////////////////////////////////////////////
@@ -19,14 +20,16 @@ app.get('/newUser', function(req, res){
     res.sendFile(paths.join(__dirname, '../../../public/', 'newUser.html'));
 });
 
-app.get('/generateBoard', function(req, res){
-    
-    
-    var board = gameBoard();
-    console.log(board);
+app.get('/getUser', function(req, res){ 
+    let user = new Player(1);
+    console.log(user);
+    res.status(200);
+    res.json(user);
+});
 
-    // board.generate();
-    console.log("ITS BEEN CALLED");
+app.get('/generateBoard', function(req, res){
+
+    var board = gameBoard();
     res.status(200);
     res.json(board);
 });
