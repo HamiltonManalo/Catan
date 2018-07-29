@@ -57,25 +57,4 @@ function Player(playerID) {
   console.log("Player"+this.id+" created!");
 };
 
-
-
-// Creates player objects for the specified number of players
-var initializePlayers = function(numPlayers) {
-  // Must be at least 2 players, and no more than 4
-  if (numPlayers > 4 || numPlayers < 2) {
-    alert("You have won a prize! Check the console!");
-    console.log("Stupid Cunt, eh");
-    return;
-  }
-  console.log("There are " + numPlayers + " players in the game");
-  // Generate player object for each player
-  for (var i = 0; i < numPlayers; i++) {
-    players[i] = new Player(i);
-  }
-  console.log(players);
-  // Set active player to first in array
-  currentPlayerID = players[0];
-  console.log("Current player is Player" + players[0].id);
-};
-
 module.exports = Player;

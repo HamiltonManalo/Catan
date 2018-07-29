@@ -48,7 +48,7 @@
 					<option value="1">Player1</option>
 					<option value="2">Player2</option>
 					<option value="3">Player3</option>
-					<option value="999">None</option>
+					<option value="666">None</option>
 				</select> 
 				<button id="road-submit" class="btn">Update</button>
 			</div>
@@ -60,7 +60,7 @@
 					<option value="1">Player1</option>
 					<option value="2">Player2</option>
 					<option value="3">Player3</option>
-					<option value="999">None</option>
+					<option value="666">None</option>
 				</select> 
 				<button id="building-submit" class="btn">Update</button>
 			</div>
@@ -170,91 +170,17 @@
 		</div>
 
 		<script src="/js/debugger-tools.js" type="text/javascript"></script>
-		<script src="/js/socket.io/socket.io.js"></script>
-		<script src="/js/render.js"></script>;
-		<script src="/js/events.js"></script>;
-		<script src="/js/newUser.js"></script>;
-		<script>  
-		var gameBoard = {};
-		// $(document).on('ready', function() {
-		// 	var userName = prompt("WOT IS YER NAME FUKBOI?");
-		// 	socket.emit('add user', userName);
-		// });
-		 var socket = io();
-		 $('#roll').click(function(){
-		 		console.log('on click successful')
-		 		 	socket.emit('rollRequest')
-		 		 });
-
-		 	socket.on('rollRequest', function(roll){
-		 			$('#rolls').append($('<li>').text(roll));
-		 	});
-
-		 socket.on('login', function(msg){
-		 	$('#rolls').append($('<li>').text(msg.msg))
-		 });
-
-		 // Import gameBoard Object
-			 
-
-			 socket.on('send board', function(board) { 
-		 		console.log('Board received, Cap\'n')
-		 		gameBoard = JSON.parse(board);
-		 		function protos() { 
-		 			gameBoard.tiles.__proto__.getElement = function() {
-				    return $('.resource-tile[data-tile-id="'+this.id+'"]');
-				  };
-
-				gameBoard.roads.__proto__.getElement = function() {
-				    return $('.resource-tile[data-tile-id="'+this.id+'"]');
-				  };
-
-				gameBoard.buildings.__proto__.getElement = function() {
-				    return $('.resource-tile[data-tile-id="'+this.id+'"]');
-				  };
-		 		};
-		 		return board;
-			 }) 
-		 $('#createPlayers').click(function(){
-		 	console.log("creating Players");
-		 //	var num = prompt('How Many Players?');
-		 //	console.log(3)
-
-		 	socket.emit('numplayers', Number(3))
-		 	return false;
-		 	})
-		 	
-		 	socket.on('numplayers', function(msg){
-				$('#rolls').append($('<li>').text(msg));	
-		 		console.log('players created emit')
-	 		});
-			
-			// socket.on('checkBoard', function(msg){
-			// 	console.log(JSON.parse(msg));
-			// 	$('#rolls').append($('<li>').text(JSON.stringify.(msg));
-			// });
-
-			$('#checkBoard').click(function(){
-				console.log('piece test click');
-				socket.emit('checkBoard', function(){});
-				return false;
+		<script src="/js/render.js"></script>
+		<script src="/js/events.js"></script>
+		<script src="/js/newUser.js"></script>
+		<script src="/js/state.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script> 
+			var socket = io(); 
+			socket.on('news', function (data) {
+				console.log(data);
+				socket.emit('my other event', { my: 'data' });
 			});
-
-			$('#pt').click(function(){
-				var tileId = prompt('What ID?')
-				console.log('PT Called! ID ' + tileId);
-				socket.emit('getTileElement',tileId)
-			})
-
-			socket.on('tileinfo', function(tile) {
-				console.log(tile)
-				return $(tile)
-			});
-
-			/* tileId test */
-			$('#conTest').click(function(){
-				console.log("conTest called");
-				socket.emit('constructorTest', function(){})
-			});
-		</script>
+			</script>
+		<script src="/js/websockets.js"></script>
 </body>

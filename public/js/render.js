@@ -8,7 +8,7 @@ var renderRoads = function() {
       .attr('data-road-id',roadObject.id)
       .addClass('road')
       .addClass('road-'+roadObject.display.angle)
-      .click(placeRoadEventGenerator(r, User.id))
+      .click(placeRoadEventGenerator(r, CurrentPlayer))
       .css({
         bottom: roadObject.display.y,
         right: roadObject.display.x
@@ -28,7 +28,7 @@ var renderBuildings = function() {
     $buildingDOM = $('<div/>')
       .attr('data-building-id',buildingObject.id)
       .addClass('building')
-      .click(placeTownEventGenerator(b, User.id)
+      .click(placeTownEventGenerator(b, CurrentPlayer)
       )
       .css({
        bottom: buildingObject.display.y,

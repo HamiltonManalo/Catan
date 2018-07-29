@@ -14,8 +14,8 @@
 // 		});
 // 	});
 // });
-let User; 
+var CurrentPlayer; 
 
 window.onload = httpRequest('http://localhost:8080/getUser',function(user){
-   User = JSON.parse(user);
+   CurrentPlayer = JSON.parse(user);
     })

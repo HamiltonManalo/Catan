@@ -34,9 +34,9 @@ function placeTownEventGenerator (target, player) {
     }
 
     let newAtt = document.createAttribute('data-owner')
-    newAtt.value = player
+    newAtt.value = this.id
     building.setAttributeNode(newAtt)
-  }.bind(null, target, player)
+  }.bind(CurrentPlayer, target, this.id)
 }
 
 function placeRoadEventGenerator (target, player) {
@@ -50,7 +50,7 @@ function placeRoadEventGenerator (target, player) {
       }
     }
     let newAtt = document.createAttribute('data-owner')
-    newAtt.value = player
+    newAtt.value = this.id
     road.setAttributeNode(newAtt)
-  }.bind(null, target, player)
+  }.bind(CurrentPlayer, target, this.id)
 }
