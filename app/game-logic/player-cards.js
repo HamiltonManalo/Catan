@@ -1,8 +1,10 @@
+var generator = require('./../Utilities/generators');
 /*
     PLAYER Constructor
     ------------------------------------------------------
 */
-function Player(playerID) {
+function Player(playerID, uuid) {
+  this.guid = uuid;
   this.id = playerID;
   this.isTurn = false;
   this.score = 0;
@@ -53,8 +55,6 @@ function Player(playerID) {
       }
     }
   };
-  // Log what happened
-  console.log("Player"+this.id+" created!");
 };
 
 module.exports = Player;

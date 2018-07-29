@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var generator = require('./../Utilities/generators.js');
 // var  = require('./helpers.js');
 /*
     +----------------------------------------------------+
@@ -99,6 +100,7 @@ function Coordinates(xPos,yPos,angle) {
 
 class boardMaker {
     constructor() {
+      this.gameId = generator.uuid();
         // Specify size of board in rings (min 3)
         this.config = new configuration(3);
         // Board Objects

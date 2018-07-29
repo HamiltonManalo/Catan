@@ -17,9 +17,11 @@ const cons = require('../game-logic/cons.js');
 const bodyParser = require('body-parser');
 const app = require('./server/routes.js');
 const server = app.listen(8080, function () { console.log('Catan is being served on port 8080!'); });
-const io = require('socket.io')(server);
+const io = require('./server/sockets.js').listen(server);
 
-module.exports = io;
+// exports = module.exports = io;
+
+
 
 
 

@@ -1,7 +1,22 @@
-const io = require('./../index.js');
+// const io = require('./../index.js');
+const socketio = require('socket.io');
 
-io.on('connection', function(socket){
-    io.emit('news', { hello: 'world' });
-});
+module.exports.listen = function(app) {
+    io = socketio.listen(app);
 
-module.exports = io;
+    io.on('connection', function(socket){
+        socket.emit('news',  true );
+
+        socket.on('validateTurn', function(data){
+            let Player = JSON.parse(data);
+            if(Player.id === 1)
+                socket.emit('validateTurnResponse',true);
+                else 
+                socket.emit('validateTurnResponse',false);
+    
+        }) 
+
+    });
+    
+   
+}

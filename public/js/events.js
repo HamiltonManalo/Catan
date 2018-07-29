@@ -24,6 +24,9 @@ function dragAndDrop (target) {
 }
 function placeTownEventGenerator (target, player) {
   return function placeHouse (target, player) {
+      //Move logic into socket call
+    if(validatePlayer(ThisPlayer))
+        return console.log('not yo turn boi');
     let elements = document.body.getElementsByClassName('building')
     let building
     for (let i = 0; i < elements.length; i++) {
