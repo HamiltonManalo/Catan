@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const paths = require('path');
-const gameBoard = require("../../game-logic/gameboard.js");
+const gb = require("../../game-logic/gameboard.js");
 const Player = require('../../game-logic/player-cards.js');
 const generator = require('./../../Utilities/generators');
 ///////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,8 @@ app.get('/getUser', function(req, res){
 
 app.get('/generateBoard', function(req, res){
 
-    var board = gameBoard();
+    var board = gb.generateBoard();
+    gb.board = board;
     res.status(200);
     res.json(board);
 });
