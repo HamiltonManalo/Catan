@@ -21,12 +21,13 @@ let validatePlayerCanPlaceBuilding = function(gb, buildingId) {
       return true;
     } // reassigning path
   }
-  console.log('returning false')
   return false
 }
+
 /* 
  * Roads can only be built if the player owns an adjacent road and the road space is unowned 
  */ 
+
 let validatePlayerCanPlaceRoad = function(gb, roadId, playerId) {
     let path = gb.roads;
     let road = gb.roads['road' + roadId]
@@ -36,6 +37,7 @@ let validatePlayerCanPlaceRoad = function(gb, roadId, playerId) {
             return true;
         }
     }
+    return false;
 }
 exports.validateRoad = validatePlayerCanPlaceRoad
 exports.validateBuilding = validatePlayerCanPlaceBuilding

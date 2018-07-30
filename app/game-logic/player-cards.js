@@ -46,7 +46,7 @@ function Player(playerID, uuid) {
     this.score = totalScore
   };
   // Pay resources from second placed building
-  this.payT0 = function() {
+  this.payTurnZero = function() {
     var resourcesToPay = this.secondBuilding.resources;
     for (i = 0; i < resourcesToPay.length; i++) {
       // Only pay if not an ocean

@@ -16,7 +16,7 @@ module.exports.listen = function(app) {
                 socket.emit('validateTurnResponse',false);
         }) 
         socket.on('canBuildBuilding', function(buildingId){
-            let result = validator.validatePlayerCanPlaceBuilding(gb.board, buildingId);
+            let result = validator.validateBuilding(gb.board, buildingId);
             if(result) {
                 socket.emit('canBuildBuildingResult', true)
             } else {
@@ -25,7 +25,7 @@ module.exports.listen = function(app) {
         })
 
         socket.on('canBuildRoad', function(roadId, playerId) {
-            let result = validator.validatePlayerCanPlaceRoad(gb, roadId, playerId);
+            let result = validator.validateRoad(gb, roadId, playerId);
             if(result) {
                 socket.emit('canBuildRoadResult', true)
             } else {

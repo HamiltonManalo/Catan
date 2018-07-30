@@ -39,10 +39,9 @@ function placeTownEventGenerator (target, player) {
 
     socket.emit('validateTurn', JSON.stringify(player))
     socket.on('validateTurnResponse', function (validation) {
-        console.log('validation value = ' + validation);
         socket.emit('canBuildBuilding',target);
+        console.log('Building Validation Result = ' + validation);
         socket.on('canBuildBuildingResult', function(canBuildBuildingResult){
-            console.log('Validation ' + validation + " canBuildResult " + canBuildBuildingResult)
             if(validation && canBuildBuildingResult)
               building.setAttributeNode(newAtt);
         })
@@ -50,9 +49,12 @@ function placeTownEventGenerator (target, player) {
 
   }.bind(null , target, CurrentPlayer)
 }
+
 function validatePlayer (Player) {
     
   }
+
+
 function placeRoadEventGenerator (target, player) {
   return function (target, player) {
     let elements = document.body.getElementsByClassName('road')
@@ -68,7 +70,7 @@ function placeRoadEventGenerator (target, player) {
 
     socket.emit('validateTurn', JSON.stringify(player))
     socket.on('validateTurnResponse', function (validation) {
-        console.log('validation value = ' + validation);
+        console.log('Road Validation Building Result' + validation);
         socket.emit('canBuildRoad',target);
         socket.on('CanBuildRoadResult', function(result) {
             if(result) {

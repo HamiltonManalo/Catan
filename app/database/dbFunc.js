@@ -26,6 +26,12 @@ Users.prototype.getAll = function() {
 
     };
 };
+    
+/* 
+Implement a diff check for board saving
+It'll look good on the CV
+*/
+
 
     // console.log("bbb " + users.getAll()); // not connected at the very first time so displays undefined
 module.exports = mongo;
