@@ -14,15 +14,16 @@ function Player(playerID, uuid) {
   this.cities = null;
   this.longestRoad = false;
   this.largestArmy = false;
+  this.activePlayer = false;
   // Sets second building state which will create payout for turn0
   this.secondBuilding = null;
   // Player resource hand
   this.resources = {
-      sheep: 0,
-      wheat: 0,
-      wood: 0,
-      ore: 0,
-      brick: 0,      
+      sheep: 3,
+      wheat: 3,
+      wood: 3,
+      ore: 3,
+      brick: 3,      
   };
   // Method for adding a resource to player's hand
   this.addResource = function(resource) {

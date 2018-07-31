@@ -66,25 +66,25 @@ function configuration (numRings) {
   ])
   // Hard coding chits for now
   this.chits = [
-    { value: 11, alpha: 'R', probability: '●●' },
-    { value: 3, alpha: 'Q', probability: '●●' },
-    { value: 6, alpha: 'P', probability: '●●●●●' },
-    { value: 5, alpha: 'O', probability: '●●●●' },
-    { value: 4, alpha: 'N', probability: '●●●' },
-    { value: 9, alpha: 'M', probability: '●●●●' },
-    { value: 10, alpha: 'L', probability: '●●●' },
-    { value: 8, alpha: 'K', probability: '●●●●●' },
-    { value: 4, alpha: 'J', probability: '●●●' },
-    { value: 11, alpha: 'I', probability: '●●' },
-    { value: 12, alpha: 'H', probability: '●' },
-    { value: 9, alpha: 'G', probability: '●●●●' },
-    { value: 10, alpha: 'F', probability: '●●●' },
-    { value: 8, alpha: 'E', probability: '●●●●●' },
-    { value: 3, alpha: 'D', probability: '●●' },
-    { value: 6, alpha: 'C', probability: '●●●●●' },
-    { value: 2, alpha: 'B', probability: '●' },
-    { value: 5, alpha: 'A', probability: '●●●●' },
-    { value: '', alpha: '', probability: '' }
+    { payTo: [], value: 11, alpha: 'R', probability: '●●' },
+    { payTo: [], value: 3, alpha: 'Q', probability: '●●' },
+    { payTo: [], value: 6, alpha: 'P', probability: '●●●●●' },
+    { payTo: [], value: 5, alpha: 'O', probability: '●●●●' },
+    { payTo: [], value: 4, alpha: 'N', probability: '●●●' },
+    { payTo: [], value: 9, alpha: 'M', probability: '●●●●' },
+    { payTo: [], value: 10, alpha: 'L', probability: '●●●' },
+    { payTo: [], value: 8, alpha: 'K', probability: '●●●●●' },
+    { payTo: [], value: 4, alpha: 'J', probability: '●●●' },
+    { payTo: [], value: 11, alpha: 'I', probability: '●●' },
+    { payTo: [], value: 12, alpha: 'H', probability: '●' },
+    { payTo: [], value: 9, alpha: 'G', probability: '●●●●' },
+    { payTo: [], value: 10, alpha: 'F', probability: '●●●' },
+    { payTo: [], value: 8, alpha: 'E', probability: '●●●●●' },
+    { payTo: [], value: 3, alpha: 'D', probability: '●●' },
+    { payTo: [], value: 6, alpha: 'C', probability: '●●●●●' },
+    { payTo: [], value: 2, alpha: 'B', probability: '●' },
+    { payTo: [], value: 5, alpha: 'A', probability: '●●●●' },
+    { payTo: [], value: '', alpha: '', probability: '' }
   ]
   // Keeping track of desert placement
   // Works because there is only 1 desert
@@ -301,43 +301,6 @@ function Road (tileA, tileB) {
   tileA.roads.push(this.id)
   tileB.roads.push(this.id)
 
-  // Looks at all adjacent roads, at least 1 needs to be the same owner as active player, else return false
-  this.checkAdjacent = function () {
-    for (i = 0; i < this.adjacent.length; i++) {
-      if (this.adjacent[i].owner == currentPlayerID && this.owner == null) {
-        // Returns true if player owns adjacent road
-        console.log(this.adjacent[i].owner)
-        return true
-        // break;
-      }
-      for (j = 0; j < this.buildings.length; j++) {
-        if (this.buildings[j].owner == currentPlayerID) {
-          return true
-        }
-      }
-      console.log('Check returned false')
-      return false
-    }
-  }
-
-  // Uses check adjacent to actually build a road
-  this.build = function (player) {
-    if (player.roads >= 15) {
-      console.log('You are out of roads')
-      return false
-    }
-    if (this.checkAdjacent()) {
-      console.log(
-        'A road  has been built on ' + this.ID + ' for player ' + player
-      )
-      this.newOwner(player)
-      this.owner.roads++
-      return true
-    } else {
-      console.log('No Adjacent Roads')
-      return false
-    }
-  }
 
   // Increment total
   gameBoard.numRoads++

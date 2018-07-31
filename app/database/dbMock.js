@@ -12,6 +12,11 @@ class game {
     }
 }
 
+function getGB() {
+    return gameTable[0];
+}
+
 module.exports = {
     //Mock DB logic here
+    getGameboard: getGB,
 }

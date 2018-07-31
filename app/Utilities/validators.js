@@ -1,5 +1,4 @@
 
-
 let validatePlayerCanPlaceBuilding = function(gb, buildingId) {
   // Check adjacent buildings for owners
   let path = gb.buildings
@@ -39,5 +38,44 @@ let validatePlayerCanPlaceRoad = function(gb, roadId, playerId) {
     }
     return false;
 }
+
+let validatePlayerHasResourcesForRoad = function(playerObject) {
+    let playerResources = playerObject.resources;
+
+    if(playerResources.wood >= 1 && playerResources.brick >= 1)
+        return true;
+    else 
+        return false;
+}
+
+let validatePlayerHasResourcesForSettlement = function(playerObject) {
+    let playerResources = playerObject.resources;
+
+    if(playerResources.wood >= 1 && playerResources.brick >= 1 &&
+        playerResources.wheat >=1 && playerResources.sheep >= 1)
+        return true; 
+    else 
+        return false; 
+}
+
+let validatePlayerHasResourcesForCity = function(playerObject) {
+    let playerResources = playerObject.resources;
+
+    if(playerResources.wheat >= 2 && playerResources.ore >= 2) 
+        return true;
+    else
+        return false; 
+}
+
+let validatePlayerHasResourcesForDevCard = function(playerObject) {
+    let playerResources = playerObject.resources;
+    
+    if(playerResources.sheep >= 1 && playerResources.wheat >= 1 && 
+        playerResources.ore >= 1)
+        return true;
+    else
+        return false; 
+}
+
 exports.validateRoad = validatePlayerCanPlaceRoad
 exports.validateBuilding = validatePlayerCanPlaceBuilding
