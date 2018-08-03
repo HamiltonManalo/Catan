@@ -1,21 +1,27 @@
+
+
 class turnService {
-    constructor(DBFunc, playerService){
-        this.DBFunc = DBFunc
+    constructor(DBFunc){
+        this.DBFunc = DB;
+        this.game;
     } 
         //DB Call to request gameObject
-    game; //Holds gameObject
+     //Holds gameObject
     
-    
+    getBoard() {
+        this.game = DBFunc.getGB();
+    }
     nextTurn() { 
+        let lastPlayer = playerArray.length -1;
+        //If last player, its weird
+        if(playerArray[lastPlayer].activePlayer == true) {
+            playerArray[0].activePlayer = true;
+            playerArray[lastPlayer] = false; 
+            return;
+        }  
         for(let i = 0; i < playerArray.length; i++) {
-            let lastPlayer = playerArray.length -1;
-            //If last player, its weird
-            if(playerArray[lastPlayer].activePlayer == true) {
-                playerArray[0].activePlayer = true;
-                playerArray[lastPlayer] = false; 
-                break;
-
-            } else if( playerArray[i].activePlayer == true) {
+           
+            if( playerArray[i].activePlayer == true ) {
                 playerArray[i].activePlayer = false;
                 playerArray[i+1].activePlayer = true; 
                 break;
@@ -24,18 +30,19 @@ class turnService {
     }
 
     awardResources(diceResult, TilesOwned) {
+        let serviceInstance = new playerService(DB);
         for(let tileOwned in TilesOwned) {
             if(diceResult === tileOwned.chit.value) {
 
                 let resource = tileOwned.resourceType;
 
-                tileOwned.payTo.map(x => playerService.AddResource(x.resource, x.playerId))
+                tileOwned.payTo.map(x => serviceInstance.AddResource(x.resource, x.playerId))
             }
         }
     }
 
     CompleteTurn() {
-        //Save to DB
+        DBFunc.saveGB(game);
     }
 /*
 Private Methods below

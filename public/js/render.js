@@ -28,7 +28,7 @@ var renderBuildings = function() {
     $buildingDOM = $('<div/>')
       .attr('data-building-id',buildingObject.id)
       .addClass('building')
-      .click(placeTownEventGenerator(b, CurrentPlayer)
+      .click(placeSettlementEventGenerator(b, CurrentPlayer)
       )
       .css({
        bottom: buildingObject.display.y,
@@ -69,16 +69,7 @@ var renderTiles = function() {
     n++;
   }
 };
-function httpRequest(url, callback) {
-  var http = new XMLHttpRequest();
-  http.onreadystatechange = function() {
-    if(this.readyState == 4 && this.status == 200) {
-      callback(this.responseText)
-    }
-  };
-  http.open('GET', url, true);
-  http.send();
-}
+
 $('#getBoard').click(function() { 
   console.log('get board called');
   
@@ -99,3 +90,24 @@ function generateBoardHTML(Board) {
   console.log("Gameboard Generated");
   console.log("--------------------------------------");
 };
+
+function httpRequest (url, callback) {
+  var http = new XMLHttpRequest()
+  http.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      callback(this.responseText)
+    }
+  }
+  http.open('GET', url, true)
+  http.send()
+}
+function httpPost (url, data) {
+  var http = new XMLHttpRequest()
+  http.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText)
+    }
+  }
+  http.open('POST', url, true)
+  http.send(data)
+}

@@ -4,6 +4,8 @@ const paths = require('path');
 const gb = require("../../game-logic/gameboard.js");
 const Player = require('../../game-logic/player-cards.js');
 const generator = require('./../../Utilities/generators');
+const DB = require('../../database/dbMock');
+const bodyParser = require('body-parser')
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
 ///////////////////////////////////////////////////////////////////////////
@@ -22,7 +24,6 @@ app.get('/newUser', function(req, res){
 });
 
 
-
 let counter = 0;
 function count() {
     if(counter > 3) {
@@ -34,11 +35,10 @@ function count() {
 }
 app.get('/getUser', function(req, res){ 
     let user;
-    if(generator.returnPlayerArray.length < 5) {
-        user = generator.player(count());
-    } else {
-        user = generator.returnPlayerArray[count()]
-    }
+   
+        user = generator.player(0)
+   
+    DB.savePlayers([user]) //send as array because you're only producing 1 player right now
     res.status(200);
     res.json(user);
 });
@@ -46,9 +46,23 @@ app.get('/getUser', function(req, res){
 app.get('/generateBoard', function(req, res){
 
     var board = gb.generateBoard();
+
     gb.board = board;
+    DB.saveGB(board)
     res.status(200);
     res.json(board);
 });
+/********************************************
+**The date will look like                  **
+** {'buildingType: 'road',                 **
+**  'confirmation: True}                   **
+*********************************************/
+app.post('/confirmBuild', function(req, res) {
+   
+        console.log('called');
+   
+    res.status(200);
+    res.send('I hear u')
+})
 
 module.exports = app;

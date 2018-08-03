@@ -1,3 +1,41 @@
+// (function() {
+// var element = document.getElementById
+// }())
+
+function showDecisionDialog (Header) {
+  let element = document.getElementById('dialog-box-hidden')
+  let dialogHeader = Header.buildingType
+  element.innerHTML = `<h2>Confirm to place ${dialogHeader}</h2>
+  <hr/>
+  <button class="confirm-btn" id="choice-yes">Place${dialogHeader}</button>
+  <button class="confirm-btn" id="choice-no">Don't place ${dialogHeader}</button>`
+  
+  element.setAttribute('id', 'dialog-box-show')
+  
+  let yesBtn = document.getElementById('choice-yes')
+  yesBtn.addEventListener('click', function () {
+
+      let element = document.getElementById('dialog-box-show')
+      element.setAttribute('id', 'dialog-box-hidden')
+      httpPost('http://localhost:8080/confirmBuild', buildingObject)
+      
+        building.setAttributeNode(newAtt) 
+    },
+    { once: true }
+  )
+
+  let noBtn = document.getElementById('choice-no')
+  noBtn.addEventListener(
+    'click',
+    function () {
+
+      let element = document.getElementById('dialog-box-show')
+      element.setAttribute('id', 'dialog-box-hidden')
+    },
+    { once: true }
+  )
+}
+
 function dragAndDrop (target) {
   var element = document.getElementById(target)
   var mover = false, x, y, posx, posy, first = true
@@ -22,7 +60,7 @@ function dragAndDrop (target) {
     }
   }
 }
-function placeTownEventGenerator (target, player) {
+function placeSettlementEventGenerator (target, player) {
   return function placeHouse (target, player) {
     // Move logic into socket call
 
@@ -35,25 +73,26 @@ function placeTownEventGenerator (target, player) {
       }
     }
     let newAtt = document.createAttribute('data-owner');
-    newAtt.value = player.id;
 
-    socket.emit('validateTurn', JSON.stringify(player))
-    socket.on('validateTurnResponse', function (validation) {
-        socket.emit('canBuildBuilding',target);
-        console.log('Building Validation Result = ' + validation);
-        socket.on('canBuildBuildingResult', function(canBuildBuildingResult){
-            if(validation && canBuildBuildingResult)
-              building.setAttributeNode(newAtt);
-        })
+    let buildingObject = { 'buildingType': 'settlement', 'target': target }
+
+    newAtt.value = player.id
+
+    socket.emit('validateTurn',JSON.stringify(player))
+    socket.on('validateTurnResponse', function (TurnValidationResult) {
+      socket.emit('canBuildBuilding', target)
+      console.log('Building Validation Result = ' + TurnValidationResult)
+
+      socket.on('canBuildBuildingResult', function (canBuildBuildingResult) {
+        
+        if (TurnValidationResult && canBuildBuildingResult) { 
+          showDecisionDialog(buildingObject, building)
+          
+          }
+      })
     })
-
-  }.bind(null , target, CurrentPlayer)
+  }.bind(null, target, CurrentPlayer)
 }
-
-function validatePlayer (Player) {
-    
-  }
-
 
 function placeRoadEventGenerator (target, player) {
   return function (target, player) {
@@ -70,13 +109,14 @@ function placeRoadEventGenerator (target, player) {
 
     socket.emit('validateTurn', JSON.stringify(player))
     socket.on('validateTurnResponse', function (validation) {
-        console.log('Road Validation Building Result' + validation);
-        socket.emit('canBuildRoad',target);
-        socket.on('CanBuildRoadResult', function(result) {
-            if(result) {
-                road.setAttributeNode(newAtt)
-            }
-        })
+      console.log('Road Validation Building Result' + validation)
+
+      socket.emit('canBuildRoad', target)
+
+      socket.on('CanBuildRoadResult', function (result) {
+        showDecisionDialog(canBuildResult.buildingType)
+
+        }) 
     })
   }.bind(CurrentPlayer, target, this)
 }

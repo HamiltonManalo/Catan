@@ -1,8 +1,5 @@
 class gameBoardService {
-    constructor(gameBoard, playerObject, playerService, DBService) {
-        this.gameBoard = gameBoard;
-        this.player = playerObject;
-        this.playerService = playerService;
+    constructor(DBService) {
         this.DBService = DBService;
     }
 

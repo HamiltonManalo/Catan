@@ -1,25 +1,16 @@
-/*Requires */
-// var paths = require('path');
-
-// var fs = require('fs');
-// var fs = require('math.js');
-// var MongoClient = require('mongodb').MongoClient;
-// var assert = require('assert');
-// var ObjectId = require('mongodb').ObjectId;
-// var parseUrlencoded = bodyParser.urlencoded({extended: false});
-// var gameboard = require('../game-logic/gameboard.js');
-// var _ = require('lodash');
-// var $ = require('jQuery');
-// var config = require('./config.js');
 const http = require('http');
 const url = 'mongodb://localhost:64324/test';
 const cons = require('../game-logic/cons.js');
 const bodyParser = require('body-parser');
 const app = require('./server/routes.js');
 const server = app.listen(8080, function () { console.log('Catan is being served on port 8080!'); });
-const io = require('./server/sockets.js').listen(server);
+const socketio = require('socket.io');
+const io = require('./server/sockets');
 
-// exports = module.exports = io;
+let sockets = socketio.listen(server);
+io.start(sockets);
+
+
 
 
 

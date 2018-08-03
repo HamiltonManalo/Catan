@@ -61,6 +61,12 @@ body * {
 .group p {
   line-height: 24px;
 }
+
+#confirm-btn {
+  border-color: #aaa;
+  transition: all 0.25s ease;
+}
+
 .btn {
   color: #555;
   border-color: #aaa;
@@ -100,11 +106,47 @@ body * {
 
 
 
+#dialog-box-show {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: #fff;
+  width: 500px;
+  height: auto;
+  padding: 30px;
+  text-align: center;
+  color: #666;
+  border-radius: 5px;
+  z-index: 20;
+}
+#dialog-box-show h2 {
+  margin: 10px;
+}
+#dialog-box-show hr {
+  margin-bottom: 5px;
+}
+#dialog-box-hidden {
+ display: none;
+}
 
+.confirm-btn {
+  font-size: 14px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease;
+}
+#choice-yes {
+  background-color: #5ebd7b;
+}
 
-
-
-
+#choice-no {
+  background-color: #d31515
+}
 /* Game Setup Styles */
 
 .game-setup {
