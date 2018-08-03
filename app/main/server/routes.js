@@ -62,7 +62,7 @@ app.post('/confirmBuild', function(req, res) {
         console.log('called');
    
     res.status(200);
-    res.send('I hear u')
+    res.send(true)
 })
 
 module.exports = app;

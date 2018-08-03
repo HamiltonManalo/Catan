@@ -1,5 +1,5 @@
 
-let validatePlayerCanPlaceBuilding = function(gb, buildingId) {
+let validatePlayerCanPlaceBuilding = function(gb, buildingId, playerId) {
   // Check adjacent buildings for owners
   let path = gb.buildings
   let building = gb.buildings['b' + buildingId];
@@ -15,7 +15,7 @@ let validatePlayerCanPlaceBuilding = function(gb, buildingId) {
   for (let i = 0; i < building.adjacent.length; i++) {
     let adjacentBuildingId = building.adjacent[i]
 
-    if (path['b' + adjacentBuildingId].owner == gb.currentPlayerID && building.owner == null) {
+    if (path['b' + adjacentBuildingId].owner === playerId && building.owner === null) {
       console.log('Can Build a town here')
       return true;
     } // reassigning path

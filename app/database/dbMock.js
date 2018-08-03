@@ -21,10 +21,7 @@ function getPlayers() {
 function savePlayers(playerArray) {
     gameTable[0].players = playerArray;
 }
-module.exports = {
-    //Mock DB logic here
-    getGameboard: getGB,
-    saveGB: saveGB,
-    getPlayers: getPlayers,
-    savePlayers: savePlayers
-}
+module.exports.getGameboard = getGB
+module.exports.saveGB = saveGB
+module.exports.getPlayers = getPlayers
+module.exports.savePlayers = savePlayers

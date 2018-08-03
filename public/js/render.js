@@ -101,11 +101,11 @@ function httpRequest (url, callback) {
   http.open('GET', url, true)
   http.send()
 }
-function httpPost (url, data) {
+async function httpPost(url, data, callback) {
   var http = new XMLHttpRequest()
   http.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText)
+      callback(this.response);
     }
   }
   http.open('POST', url, true)
