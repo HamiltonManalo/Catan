@@ -103,11 +103,13 @@ function httpRequest (url, callback) {
 }
 async function httpPost(url, data, callback) {
   var http = new XMLHttpRequest()
+
   http.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       callback(this.response);
     }
   }
   http.open('POST', url, true)
-  http.send(data)
+  http.setRequestHeader("Content-Type", "application/json");
+  http.send(JSON.stringify(data))
 }

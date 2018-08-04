@@ -1,7 +1,7 @@
 const http = require('http');
 const url = 'mongodb://localhost:64324/test';
 const cons = require('../game-logic/cons.js');
-const bodyParser = require('body-parser');
+
 const app = require('./server/routes.js');
 const server = app.listen(8080, function () { console.log('Catan is being served on port 8080!'); });
 const socketio = require('socket.io');

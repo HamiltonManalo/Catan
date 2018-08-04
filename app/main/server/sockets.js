@@ -16,26 +16,24 @@ module.exports = {
             turnResult = true
         else 
             turnResult = false
-
+        let gb = db.getGameboard();
         if(data.buildingType === 'settlement') {
-            placementResult = true //canPlaceSettlement(db.getGameboard(), data.nodeId, data.playerId )
+            placementResult = validator.validateBuilding(gb, buildingNodeId, playerId);
         } else if(data.buildingType === 'road') {
-            //do stuff
+            placementResult = true 
         } else if(data.buildingType === 'city') {
             //do other stuff
         }
 
-        if(placementResult && turnResult) 
-            socket.emit('placeActionResult', true)
+        if(placementResult && turnResult) {
+            socket.emit('placeActionResult', {'results': true, 'data': data})
+        }
         else
             socket.emit('placeActionResult', false)
+            console.log('cant build ' + data.buildingType)
       })
 
       // New events above this line \\
     })
   }
-}
-
-function canPlaceSettlement(playerId, buildingNodeId, playerId) {
-    return validator.validateBuilding(db.getGameboard(), buildingNodeId, playerId);
 }

@@ -4,18 +4,18 @@ let validatePlayerCanPlaceBuilding = function(gb, buildingId, playerId) {
   let path = gb.buildings
   let building = gb.buildings['b' + buildingId];
   for (let j = 0; j < building.adjacent.length; j++) {
-    let adjacentRoadId = building.adjacent[j]
-    if (path['road' + adjacentRoadId].owner != null) {
+    let adjacentBuildingId = building.adjacent[j]
+    if (path['b' + adjacentBuildingId].owner != null) {
       // Returns false if there are no roads connected
-      console.log('You cant build here without a road')
+      console.log('Building too close to a rival nation!')
       return false
     }
   }
   path = gb.roads
-  for (let i = 0; i < building.adjacent.length; i++) {
-    let adjacentBuildingId = building.adjacent[i]
+  for (let i = 0; i < building.roads.length; i++) {
+    let adjacentRoadId = building.roads[i]
 
-    if (path['b' + adjacentBuildingId].owner === playerId && building.owner === null) {
+    if (path['road' + adjacentRoadId].owner === playerId && building.owner === null) {
       console.log('Can Build a town here')
       return true;
     } // reassigning path

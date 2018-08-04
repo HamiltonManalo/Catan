@@ -1,11 +1,12 @@
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
 const paths = require('path');
 const gb = require("../../game-logic/gameboard.js");
 const Player = require('../../game-logic/player-cards.js');
 const generator = require('./../../Utilities/generators');
 const DB = require('../../database/dbMock');
-const bodyParser = require('body-parser')
+
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
 ///////////////////////////////////////////////////////////////////////////
@@ -57,12 +58,32 @@ app.get('/generateBoard', function(req, res){
 ** {'buildingType: 'road',                 **
 **  'confirmation: True}                   **
 *********************************************/
-app.post('/confirmBuild', function(req, res) {
+let jsonParser = bodyParser.json()
+app.post('/confirmBuild', jsonParser, function(req, res) {
    
-        console.log('called');
-   
-    res.status(200);
-    res.send(true)
+        console.log(req.body);
+        let service = generator.gameboardService(DB)
+        let data = req.body;
+        let result;
+        if(data.buildingType === 'settlement') {
+            
+            result = service.setBuildingOwner(data.nodeId, data.playerId)
+            console.log('settlement confirmation to build')
+        } else if(data.buildingType === 'road' ) {
+            console.log('road confirmation to build')
+            result = service.setRoadOwner(data.nodeId, data.playerId)
+        } else if(data.buildingType === 'city') {
+            console.log('city confirmation to build')
+        }
+        
+    if(result){
+
+        res.status(200);
+        res.json(true)
+    } else {
+        res.status(400)
+        res.json(false)
+    }
 })
 
 module.exports = app;

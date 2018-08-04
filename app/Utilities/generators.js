@@ -1,7 +1,7 @@
 const Player = require('./../game-logic/player-cards')
 const playerService = require('./playerService');
-const gameboardService = require('./gameBoardService');
 const DB = require('../database/dbMock');
+const gameboardService = require('./gameBoardService');
 const turnServer = require('../Utilities/turnService');
 // This file will contain the logic that generates new things, IE Players and gameboards. 
 
@@ -23,4 +23,4 @@ function gbService(DbFunc) {
 //Generating Yeets all over the server
 exports.uuid = uuid; 
 exports.player = player
-exports.gameboardService = gbService(DB);
+exports.gameboardService = gbService;

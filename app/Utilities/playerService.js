@@ -8,8 +8,8 @@ class playerService {
      //holder for player array
 
     AddResource(resource, playerId) {
-
-        for(let player in playerArray) {
+        this.playerArray = DBFunc.getPlayers();
+        for(let player in this.playerArray) {
             if(!player.id === playerId) 
                 continue
             
@@ -31,5 +31,6 @@ class playerService {
                     break;
             }
         }
+        this.DBFunc.savePlayers(this.playerArray);
     }
 }

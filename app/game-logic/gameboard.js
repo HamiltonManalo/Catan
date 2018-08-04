@@ -504,7 +504,7 @@ var getBuildingIdsFromResource = function (resourceId) {
   let resource = gameBoard.tiles['tile' + resourceId]
   var buildingIds = []
   for (var i = 0; i < resource.buildings.length; i++) {
-    buildingIds.push(resource.buildings[i].id)
+    buildingIds.push(resource.buildings[i])
   }
   return buildingIds
 }
@@ -527,19 +527,16 @@ var assignBuildingsToBuilding = function (building) {
   var buildingCId = _.intersection(resourceBBuildingIds, resourceCBuildingIds)[
     0
   ]
-  // Get building objects from each ID
-  var adjacentA = gameBoard.buildings['b' + buildingAId]
-  var adjacentB = gameBoard.buildings['b' + buildingBId]
-  var adjacentC = gameBoard.buildings['b' + buildingCId]
+ 
   // Prevent undefined from being added to this building's adjacent key
-  if (adjacentA) {
-    gameBoard.building.adjacent.push(adjacentA)
+  if (buildingAId) {
+    building.adjacent.push(buildingAId)
   }
-  if (adjacentB) {
-    gameBoard.building.adjacent.push(adjacentB)
+  if (buildingBId) {
+    building.adjacent.push(buildingBId)
   }
-  if (adjacentC) {
-    gameBoard.building.adjacent.push(adjacentC)
+  if (buildingCId) {
+    building.adjacent.push(buildingCId)
   }
 }
 

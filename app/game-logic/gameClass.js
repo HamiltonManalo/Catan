@@ -4,6 +4,7 @@ class Game {
         this.id = generator.uuid;
         this.board;
         this.players;
+        this.completedPlacement = false;
     }
    
 }
