@@ -21,6 +21,7 @@ function showDecisionDialog(dataObject) {
         
         httpPost('http://localhost:8080/confirmBuild', dataObject, function(result){
           result = JSON.parse(result);
+          
         if(dataObject.buildingType === 'settlement' && result) {
           elements = document.body.getElementsByClassName('building')
         structure = elements[dataObject.nodeId]

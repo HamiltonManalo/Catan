@@ -1,6 +1,6 @@
 var _ = require('lodash')
 var generator = require('./../Utilities/generators.js')
-// var  = require('./helpers.js');
+
 /*
     +----------------------------------------------------+
     |   Settlers of Catan Gameboard                      |
@@ -359,38 +359,7 @@ function Building (tileA, tileB, tileC) {
   this.getElement = function () {}
   // function to change owner of building
   this.newOwner = function (newOwner) {}
-  // Check for adjacent buildings. Should return false to build
-  // this.checkAdjacent = function() {
-  //   for (i = 0; i < this.adjacent.length; i ++) {
-  //     if (this.adjacent[i].owner != null) {
-  //       // Returns true if buildings are adjacent
-  //       console.log(this.adjacent[i].owner.id + " has a building nextdoor! you cant build")
-  //       return false;
-  //     }
-  //   }
-  //   // returns false if there are no adjacent buildings
-  //   console.log("check returned true, so you can build")
-  //   return true;
-  // };
-  // Pay resources to owner of this building based on dice roll
-  this.payResources = function (rollValue) {
-    console.log('Pay Resources called')
-    let i = 0
-    if (this.owner == null) {
-      console.log('no owner, cannot be called')
-    } else {
-      while (i < this.resources.length - 1) {
-        if (this.resources[i].chit.value == rollValue) {
-          this.owner.addResource(this.resources[i].resourceType)
-          console.log('Resources added, or should be!')
-          // break;
-        } else {
-          i++
-        }
-      }
-    }
-  }
-
+  
   // Truthy return to validate T0 playment conditions
   this.build = function (player) {
     if (player.settlements >= 15) {
@@ -418,8 +387,6 @@ function Building (tileA, tileB, tileC) {
       this.isCity = true
       this.owner.settlements--
       this.owner.cities++
-      // $element = this.getElement();
-      // $element.addClass('city');
     }
   }
 

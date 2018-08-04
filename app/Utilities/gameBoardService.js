@@ -5,9 +5,8 @@ module.exports = class gameBoardService {
         console.log(DBService != null)
     }
 
-/* 
-Private methods to make changes to the gameBoard internally with the idea that they will be implemented with calls to save to DB. 
-*/ 
+    
+
     setRoadOwner(roadId, playerId) {
         
         this.gameBoard.roads['road' + roadId].owner = playerId;

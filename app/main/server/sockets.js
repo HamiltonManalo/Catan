@@ -18,7 +18,7 @@ module.exports = {
             turnResult = false
         let gb = db.getGameboard();
         if(data.buildingType === 'settlement') {
-            placementResult = validator.validateBuilding(gb, buildingNodeId, playerId);
+            placementResult = validator.validateBuilding(gb, data.nodeId, data.playerId);
         } else if(data.buildingType === 'road') {
             placementResult = true 
         } else if(data.buildingType === 'city') {
