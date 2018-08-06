@@ -87,10 +87,37 @@
 
 		<!-- Poppup Div, all JS manipulated --> 
 		<div id="dialog-box-hidden" class="dialog"></div>
-
+		<div id="control-panel"></div>
 		<!-- Gameboard Origin -->
 		<div class="origin" id="origin"></div>
+		
 
+		<!-- End Turn button -->
+		<div class='player-options' id='player-options'>
+			<div class='player-info'>
+				<div class='resources'>
+					<div id='wheat'>
+						<p>Wheat:</p>
+						</div>
+					<div id='wood'>
+						<p>Wood:</p>
+						</div>
+					<div id='brick'>
+						<p>Brick:</p>
+						</div>
+					<div id='sheep'>
+						<p>Sheep:</p>
+						</div>
+					<div id='ore'>
+						<p>Ore:</p>
+						</div>
+					</div>
+				<div id='devCards' class='player-info'>
+					<!-- Dev Cards get inserted here -->
+				</div>
+			</div>
+			<btn class='btn' id='endTurnBtn'>End Turn</btn>	
+		</div>
 		<!-- Game Status -->
 		<div class="game-status" id="game-status">
 			<p><strong>Rolling to determine placement order</strong></p>

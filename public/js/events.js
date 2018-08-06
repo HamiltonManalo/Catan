@@ -21,7 +21,7 @@ function showDecisionDialog(dataObject) {
         
         httpPost('http://localhost:8080/confirmBuild', dataObject, function(result){
           result = JSON.parse(result);
-          
+
         if(dataObject.buildingType === 'settlement' && result) {
           elements = document.body.getElementsByClassName('building')
         structure = elements[dataObject.nodeId]
@@ -106,4 +106,8 @@ socket.on('placeActionResult', function (validation) {
   if (validation.results) 
     showDecisionDialog(validation.data)
 
+})
+
+socket.on('nextTurn', function(data){
+  console.log(data)
 })

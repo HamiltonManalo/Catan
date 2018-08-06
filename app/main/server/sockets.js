@@ -8,24 +8,26 @@ module.exports = {
     io.on('connection', function (socket) {
       
       socket.on('validatePlaceAction', function (data) {
+
         let turnResult
-        let placementResult
+        let canPlaceResult
+        
         
 
         if (data.playerId === 0) //needs player validation logic
             turnResult = true
         else 
             turnResult = false
-        let gb = db.getGameboard();
+        let gb = db.getGameObject();
         if(data.buildingType === 'settlement') {
-            placementResult = validator.validateBuilding(gb, data.nodeId, data.playerId);
+            canPlaceResult = validator.validateBuilding(gb, data.nodeId, data.playerId);
         } else if(data.buildingType === 'road') {
-            placementResult = true 
+            canPlaceResult = true 
         } else if(data.buildingType === 'city') {
             //do other stuff
         }
 
-        if(placementResult && turnResult) {
+        if(canPlaceResult && turnResult) {
             socket.emit('placeActionResult', {'results': true, 'data': data})
         }
         else
@@ -33,6 +35,7 @@ module.exports = {
             console.log('cant build ' + data.buildingType)
       })
 
+        
       // New events above this line \\
     })
   }

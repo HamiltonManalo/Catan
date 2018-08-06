@@ -2,10 +2,9 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const app = express();
 const paths = require('path');
-const gb = require("../../game-logic/gameboard.js");
-const Player = require('../../game-logic/player-cards.js');
 const generator = require('./../../Utilities/generators');
-const DB = require('../../database/dbMock');
+const db = require('../../database/dbMock');
+const io = require('./../../main/index');
 
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
@@ -36,20 +35,20 @@ function count() {
 }
 app.get('/getUser', function(req, res){ 
     let user;
-   
-        user = generator.player(0)
-   
-    DB.savePlayers([user]) //send as array because you're only producing 1 player right now
+    let user2;
+    user = generator.player(0)
+    user1 = generator.player(1)
+    
+    db.savePlayers([user, user1]) //send as array because you're only producing 1 player right now
     res.status(200);
     res.json(user);
 });
 
 app.get('/generateBoard', function(req, res){
 
-    var board = gb.generateBoard();
+    var board = generator.generateBoard();
 
-    gb.board = board;
-    DB.saveGB(board)
+    db.saveGameboard(board)
     res.status(200);
     res.json(board);
 });
@@ -61,28 +60,45 @@ app.get('/generateBoard', function(req, res){
 let jsonParser = bodyParser.json()
 app.post('/confirmBuild', jsonParser, function(req, res) {
    
-        console.log(req.body);
-        let service = generator.gameboardService(DB)
-        let data = req.body;
-        let result;
-        if(data.buildingType === 'settlement') {
-            
-            result = service.setBuildingOwner(data.nodeId, data.playerId)
-            console.log('settlement confirmation to build')
-        } else if(data.buildingType === 'road' ) {
-            console.log('road confirmation to build')
-            result = service.setRoadOwner(data.nodeId, data.playerId)
-        } else if(data.buildingType === 'city') {
-            console.log('city confirmation to build')
-        }
+    let service = generator.gameboardService(db)
+    let data = req.body;
+    let result;
+    if(data.buildingType === 'settlement') {
         
+        result = service.setSettlementOwner(data.nodeId, data.playerId)
+        console.log('settlement confirmation to build')
+    } else if(data.buildingType === 'road' ) {
+        console.log('road confirmation to build')
+        result = service.setRoadOwner(data.nodeId, data.playerId)
+    } else if(data.buildingType === 'city') {
+        console.log('city confirmation to build')
+    }
+    
     if(result){
-
+        
         res.status(200);
         res.json(true)
     } else {
         res.status(400)
         res.json(false)
+    }
+})
+
+app.post('/endTurn', jsonParser, function(req, res) {
+    
+    var game = db.getGameObject();
+    var playerService = generator.playerService(db);
+    var turnService = generator.turnService(db, playerService);
+    if(game.currentPlayersTurn === req.body.playerId) {
+        let turnSuccess = turnService.nextTurn();
+        if(turnSuccess) {
+            let response = turnService.Save();
+            io.socket.emit('nextTurn', {'nextActivePlayer': response.nextActivePlayer})
+            console.log('current active player id ' + (db.getGameObject()).currentPlayersTurn)
+        }
+        res.status(200);
+    } else {
+        res.status(400);
     }
 })
 

@@ -107,7 +107,8 @@ var debuggerTools = function() {
     $buildingObject = gameBoard.buildings["b"+$buildingId];
     // Highlight adjacent buildings
     for (var b = 0; b < $buildingObject.adjacent.length; b++) {
-      $adjacentBuilding = $buildingObject.adjacent[b].getElement();
+      let x = $buildingObject.adjacent[b];
+      $adjacentBuilding = document.querySelector(`div[data-building-id="${$buildingObject.adjacent[b]}"]`);
       $adjacentBuilding.addClass('hover');
     }
     // Highlight adjacent roads

@@ -13,6 +13,63 @@ body * {
   font-family: 'Roboto', sans-serif;
 }
 
+/* End button and such stylings*/
+#player-options  {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+}
+
+.player-info {
+  margin: 2px;
+  justify-content: space-around;
+}
+
+.resources  p {
+  
+  display: block;
+  height: 20px;
+  padding: 0 9px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 3px;
+  margin: 0.75px;
+  overflow: hidden;
+  text-align: center;
+ 
+}
+
+#wood {
+  background: rgb(82, 47, 19);
+  border-style: solid;
+  border-width: 2px;
+}
+
+#wheat {
+  background-color: rgb(255, 187, 0);
+  overflow: hidden;
+  border-style: solid;
+  border-width: 2px;
+}
+
+#sheep {
+  background-color: beige;
+  border-style: solid;
+  border-width: 2px;
+}
+
+#ore {
+  background-color: gray;
+  border-style: solid;
+  border-width: 2px;
+}
+
+#brick {
+  background-color: brown;
+  border-style: solid;
+  border-width: 2px;
+}
+
 /* Debugger Styles */
 .debugger-tools {
   position: absolute;

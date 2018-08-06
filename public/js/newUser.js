@@ -16,7 +16,9 @@
 // });
 var CurrentPlayer; 
 var ThisPlayer;
-if(!ThisPlayer)
+if(!ThisPlayer){
     window.onload = httpRequest('http://localhost:8080/getUser',function(user){
         ThisPlayer = CurrentPlayer = JSON.parse(user);
-    })
+    }
+)
+}
