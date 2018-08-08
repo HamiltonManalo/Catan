@@ -38,7 +38,9 @@ body * {
   text-align: center;
  
 }
-
+.resources {
+  display: inline;
+}
 #wood {
   background: rgb(82, 47, 19);
   border-style: solid;

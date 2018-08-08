@@ -6,7 +6,8 @@ const generator = require('../../Utilities/generators')
 module.exports = {
   start: function (io) {
     io.on('connection', function (socket) {
-      
+      this.io = socket;
+      socket.emit('test', {true: true})
       socket.on('validatePlaceAction', function (data) {
 
         let turnResult
@@ -18,11 +19,11 @@ module.exports = {
             turnResult = true
         else 
             turnResult = false
-        let gb = db.getGameObject();
+        let gameObject = db.getGameObject();
         if(data.buildingType === 'settlement') {
-            canPlaceResult = validator.validateBuilding(gb, data.nodeId, data.playerId);
+            canPlaceResult = validator.validateBuilding(gameObject, data.nodeId, data.playerId);
         } else if(data.buildingType === 'road') {
-            canPlaceResult = true 
+            canPlaceResult = validator.validateRoad(gameObject, data.nodeId, data.playerId)
         } else if(data.buildingType === 'city') {
             //do other stuff
         }
@@ -37,6 +38,7 @@ module.exports = {
 
         
       // New events above this line \\
-    })
-  }
+    }.bind(this))
+},
+io: null
 }

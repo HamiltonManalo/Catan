@@ -6,9 +6,9 @@ const socketio = require('socket.io');
 const io = require('./server/sockets');
 
 let sockets = socketio.listen(server);
-io.start(sockets);
+const socket = io.start(sockets);
 
-module.exports.io = io;
+module.exports.io = socket;
 
 
 

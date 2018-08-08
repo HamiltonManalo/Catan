@@ -7,7 +7,8 @@ class turnService {
         //DB Call to request gameObject
      //Holds gameObject
      CheckIfPlayerCompletedPlacementTurn(playerId) {
-        let playerObject = this.game.players.find(x => x===playerId);
+        
+        let playerObject = this.game.players.find(x => x.id === playerId);
         let placementCount = playerObject.settlements.length + playerObject.roads.length;
         return (placementCount === 2 || placementCount === 4)
     }
@@ -21,7 +22,7 @@ class turnService {
         let arrayLen = playerArray.length;
         //theoretically should never get hit because other validation will prevent it. 
         if(!placementComplete && this.CheckIfPlayerCompletedPlacementTurn(this.game.currentPlayersTurn)) 
-            return false;
+            return true;
         
         if(placementComplete) {
      
@@ -93,9 +94,9 @@ class turnService {
 
 
     Save() {
-        DBFunc.saveGameObject(game);
+        this.DBFunc.saveGameObject(this.game);
         let response = {
-            'nextActivePlayer': game.activePlayer,
+            'nextActivePlayer': this.game.currentPlayersTurn,
             'result': true
         }
         return response;

@@ -4,7 +4,7 @@ const app = express();
 const paths = require('path');
 const generator = require('./../../Utilities/generators');
 const db = require('../../database/dbMock');
-const io = require('./../../main/index');
+const socket = require('./sockets');
 
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
@@ -93,7 +93,8 @@ app.post('/endTurn', jsonParser, function(req, res) {
         let turnSuccess = turnService.nextTurn();
         if(turnSuccess) {
             let response = turnService.Save();
-            io.socket.emit('nextTurn', {'nextActivePlayer': response.nextActivePlayer})
+            
+            socket.io.emit('nextTurn', {'nextActivePlayer': response.nextActivePlayer})
             console.log('current active player id ' + (db.getGameObject()).currentPlayersTurn)
         }
         res.status(200);
