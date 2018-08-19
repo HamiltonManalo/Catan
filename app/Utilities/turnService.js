@@ -1,108 +1,160 @@
 class turnService {
-    constructor(DBFunc, playerService){
+    constructor(DBFunc, playerService, gameboardService, socket, fs, diceRoller){
         this.DBFunc = DBFunc;
         this.playerService = playerService;
-        this.game = this.DBFunc.getGameObject();;
-    } 
-        //DB Call to request gameObject
-     //Holds gameObject
-     CheckIfPlayerCompletedPlacementTurn(playerId) {
+        this.gbService = gameboardService;
+        this.fs = fs;
+        this.diceRoller = diceRoller;
+        this.socket = socket;
         
-        let playerObject = this.game.players.find(x => x.id === playerId);
+       
+    } 
+
+    CheckIfPlayerCompletedPlacementTurn(playerId) {
+        let game = this.DBFunc.getGameObject();
+        let playerObject = game.players.find(x => x.id === playerId);
         let placementCount = playerObject.settlements.length + playerObject.roads.length;
-        return (placementCount === 2 || placementCount === 4)
+        return ((placementCount === 2 && game.round === 1) || (placementCount === 4 && game.round === 2))
     }
 
-   
-    nextTurn() { 
-        
-        let placementComplete = this.game.completedPlacement
-        let playerArray = this.game.players;
+    beginTurn() {
+        let game = this.DBFunc.getGameObject();
+        if(!game.completedPlacement)
+            return console.log('no dice, complete placement first');
+        let diceRoll = this.diceRoller();
+        let rollResults = {
+            roll1: diceRoll[0],
+            roll2: diceRoll[1],
+            nextActivePlayer: game.currentPlayersTurn
+        }
+        this.socket.io.emit('nextTurn', rollResults);
+    }
+
+    /**
+     * Returns a boolean on other it was able to move to the next players turn. 
+     * Boolean is generally used for placement round checking or if an error completing turn is thrown
+     */   
+    endTurn() { 
+        let game = this.DBFunc.getGameObject();
+        this.SaveState(game)
+        let placementComplete = game.completedPlacement;
+        let playerArray = game.players;
         let lastPlayer = playerArray.length -1;
         let arrayLen = playerArray.length;
-        //theoretically should never get hit because other validation will prevent it. 
-        if(!placementComplete && this.CheckIfPlayerCompletedPlacementTurn(this.game.currentPlayersTurn)) 
-            return true;
+        let player = game.currentPlayersTurn;
+        
         
         if(placementComplete) {
      
             //If last player, its weird
             if( playerArray[lastPlayer].activePlayer == true) {
                 playerArray[0].activePlayer = true;
-                this.game.currentPlayersTurn = playerArray[0].activePlayer.id
-                playerArray[lastPlayer] = false; 
-                return true; //set gameObject avice player to new active player
+                playerArray[lastPlayer].activePlayer = false; 
+                game.currentPlayersTurn = playerArray[lastPlayer - 1].id;
+                game.turn ++;
+                
+                return this.Save(game); //set gameObject avice player to new active player
             }  
             for(let i = 0; i < arrayLen; i++) {
                 
                 if( playerArray[i].activePlayer == true ) {
                     playerArray[i].activePlayer = false;
                     playerArray[i+1].activePlayer = true; 
-                    this.game.currentPlayersTurn = playerArray[i+1].activePlayer.id
-                    return true;
+                    game.currentPlayersTurn = playerArray[i+1].id;
+                    game.turn ++;
+                    
+                    return this.Save(game);
                 }
             }
         } else {
+            let completedTurnPlacement = this.CheckIfPlayerCompletedPlacementTurn(player);
+            if(!completedTurnPlacement)
+                return false;
+            if(game.round === 1) {
+                let lastPlayer = playerArray[playerArray.length-1]
 
-            if(this.game.round === 1) {
                 for(let i = 0; i < playerArray.length; i++) {
-                    
+
                     if( playerArray[i].activePlayer == true ) {
+                        if(!playerArray[i+1]) {
+                           game.turn ++;
+                            
+                            return this.Save(game);
+                        }
                         playerArray[i].activePlayer = false;
                         playerArray[i+1].activePlayer = true; 
-                        game.activePlayer = playerArray[i+1].activePlayer.id
-                        return true;
+                        game.currentPlayersTurn = playerArray[i+1].id;
+                        game.turn ++;
+                        
+                        return this.Save(game);
                     }
                 }
-            } else if(this.game.round === 2){
-                for(let i = (arrayLen-1); i > 0; i--) {
+            } else if(game.round === 2){
+                
+
+                for(let i = (arrayLen-1); i >= 0; i--) {
                     if( playerArray[i].activePlayer == true ) {
+                        if(!playerArray[i-1]){
+                            this.SaveState()
+                            game.completedPlacement = true;
+                            game.turn ++;
+                            this.AwardStartingResources(game);
+                            return this.Save(game);
+                        }
+
                         playerArray[i].activePlayer = false;
                         playerArray[i-1].activePlayer = true; 
-                        game.activePlayer = playerArray[i-1].activePlayer.id
-                        return true;
+                        game.currentPlayersTurn = playerArray[i-1].id;
+                        game.turn ++;
+                        return this.Save(game);
+                    }
                 }
-
             }
         }
+        return { 'result': false };
     }
+    SaveState(game) {
+        let gf =  JSON.stringify(game) != null ? JSON.stringify(game) : '{}';
+        if(gf.length < 10) 
+            return
+        this.fs.writeFileSync('gbstate.json',gf, {'flag': 'w+'}, function(err) {
+            if(err) {
+                console.log('error')
+            } else  {
+                console.log('file written')
+            }})
     }
-    awardResources(diceResult, TilesOwned) {
-        
-        for(let tileOwned in TilesOwned) {
-            if(diceResult === tileOwned.chit.value) {
-
-                let resource = tileOwned.resourceType;
-
-                tileOwned.payTo.map(x => this.playerService.AddResource(x.resource, x.playerId))
-            }
-        }
+    /**
+     * This may need to be reworked to accept an array of settlements and iterate over them to pay the owning player.
+     * @param {number} diceResult 
+     * @param {arrayOfOwnedTiles} TilesOwned 
+     */
+    awardResources(buildingNodeId, playerId) {
+        let gb = this.gbService;
+        let building = gb.getBuildingNode(buildingNodeId);
+        let tiles = [];
+        building.resources.map(rId => tiles.push(gb.getTileNode(rId)))
+        tiles.map(tile => this.playerService.addResource(tile.resourceType, playerId));
     }
-    //this as well
-    validatePlacementComplete() {
-        let players = this.game.players;
-        const placementRound1 = players.length * 2;
-        const placementRound2 = placementRound1 * 2;
-        let placementCount = players.map(x => x.settlements.length + x.roads.length);
-        //get count of objects placed
-        placementCount = placementCount.reduce((total, value) => total + value);
-        return (placementCount % 2 === 0 && (placementCount == placementRound1 || placementCount ===placementRound2))
-       
-    }//May need to go in validation module. Probably.
-    
-
-
-
-    Save() {
-        this.DBFunc.saveGameObject(this.game);
+    /**
+     * saves current state of the game. Only for use within the turnService class
+     */
+    Save(game) {
+        this.DBFunc.saveGameObject(game);
         let response = {
-            'nextActivePlayer': this.game.currentPlayersTurn,
+            'nextActivePlayer': game.players.find(player => player.id === game.currentPlayersTurn),
             'result': true
-        }
+        };
         return response;
     }
+
+    AwardStartingResources(game) { 
+        game.players.forEach(player => {this.awardResources(player.settlements[1], player.id)});
+    //
+    }
+
 /*
-Private Methods below
+*Private Methods below
 */
    
 }

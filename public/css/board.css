@@ -25,6 +25,50 @@ body * {
   justify-content: space-around;
 }
 
+#toppanel {
+  width: 100%;
+  position: relative;
+  height: 2%;
+  top: 0;
+}
+#bottompanel {
+  width: 100%;
+  position: fixed;
+  height: 2%;
+  bottom: 0;
+  float: bottom;
+}
+
+#leftpanel {
+  height: 100%;
+  position: relative;
+  width: 2%;
+  left: 0;
+  float: left;
+}
+
+#rightpanel {
+  height: 100%;
+  position: relative;
+  width: 2%;
+  float: right;
+}
+[data-player="0"] {
+  background-color: #ff0000
+}
+
+[data-player="1"] {
+  background-color: #00ff00
+}
+
+[data-player="2"] {
+    background-color:#0000ff
+}
+
+[data-player="3"] {
+  background-color: #ff7700
+}
+
 .resources  p {
   
   display: block;
@@ -274,7 +318,67 @@ body * {
   background-color: #6dcd8a;
 }
 
+/* dice */ 
 
+.dice {
+  display: inline-table;
+  height: 100px;
+  width: 100px;
+  border: 2px solid;
+  border-color: #bbb;
+  border-radius: 15px;
+  padding: 5px;
+  margin: 10px 5px;
+}
+.dot {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #bbb;
+}
+
+.one {
+  justify-content: center;
+  align-items: center;
+}
+.two {
+  justify-content: space-between;
+}
+.two .dot:nth-of-type(2)  {
+  align-self: flex-end;
+}
+.three {
+  justify-content: space-between;
+}
+.three .dot:nth-of-type(2)  {
+  align-self: center;
+}
+.three .dot:nth-of-type(3)  {
+  align-self: flex-end;
+}
+.four {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+.five {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.five .row:nth-of-type(2) {
+  justify-content: center;
+}
+
+.six {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
 
 
@@ -574,6 +678,7 @@ body * {
 .road[data-owner="0"] {
   background-color: #ff0000;
 }
+
 .building[data-owner="1"],
 .road[data-owner="1"] {
   background-color: #00ff00;

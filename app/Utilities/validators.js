@@ -5,27 +5,25 @@ let validatePlayerCanPlaceBuilding = function (
 ) {
   // Check adjacent buildings for owners
   let building = gameObject.board.buildings['b' + buildingId] // Hacky move so I don't have to say the array somewhere. I miss linq
-  let playerObject = gameObject.players
-    .filter(player => player.id === playerId)
-    .shift()
+  let playerObject = gameObject.players.filter(player => player.id === playerId).shift()
   let resourceCheck = _validatePlayerHasResourcesForSettlement(playerObject)
-  let placementsComplete = _validatePlacementRoundsComplete(
-    gameObject,
-    playerObject
-  )
+  let placementsComplete = _validatePlacementRoundsComplete(gameObject, playerObject)
 
   // If player doesn't have resources and it isn't a placement round return false
   if (gameObject.completedPlacement && !resourceCheck) return false
-  // If player hasn't completed placement round structures, they can't end their turn
-  //   if(!placementsComplete)
-  //      return false;
+
+  let settlementCount = gameObject.players.find(x => x.id === playerId)
+    .settlements.length
+
+  if ((gameObject.round === 1 && settlementCount + 1 === 2) ||
+      (gameObject.round === 2 && settlementCount + 1 === 3))  
+    return false 
 
   let path = gameObject.board.buildings
   for (let j = 0; j < building.adjacent.length; j++) {
     let adjacentBuildingId = building.adjacent[j]
+
     if (path['b' + adjacentBuildingId].owner != null) {
-      // Returns false if there are no roads connected
-      console.log('Building too close to a rival nation!')
       return false
     }
   }
@@ -34,14 +32,10 @@ let validatePlayerCanPlaceBuilding = function (
   for (let i = 0; i < building.roads.length; i++) {
     let adjacentRoadId = building.roads[i]
 
-    if (
-      (path['road' + adjacentRoadId].owner === playerId &&
-        building.owner === null) ||
-      !placementsComplete
-    ) {
-      console.log('Can Build a town here')
+    if ((path['road' + adjacentRoadId].owner === playerId &&
+        building.owner === null) || !placementsComplete) {
       return true
-    } // reassigning path
+    } 
   }
   return false
 }
@@ -50,36 +44,40 @@ let validatePlayerCanPlaceBuilding = function (
  * Roads can only be built if the player owns an adjacent road and the road space is unowned
  */
 
+// Need validation to make sure players place second round road attached to second round building
 let validatePlayerCanPlaceRoad = function (gameObject, roadId, playerId) {
-  let resourceCheck = _validatePlayerHasResourcesForRoad(
-    gameObject.players.filter(player => player.id === playerId).shift()
-  )
+  let playerObject = gameObject.players.filter(player => player.id === playerId).shift();
+  let resourceCheck = _validatePlayerHasResourcesForRoad(playerObject)
 
-  //Check to make sure they aren't placing too many times on the first turn
-  let roadCount = gameObject.players.find(x => x.id === playerId)
-  if(gameObject.round == 0 && roadCount + 1 == 2)
-    return false;
-  if(gameObject.round == 1 && roadCount + 1 === 3 )
-    return false;
-
+  // Check to make sure they aren't placing too many times on the first turn
   if (gameObject.completedPlacement && !resourceCheck) 
     return false
-  let buildingPath = gameObject.board.buildings;
+
+  let roadCount = gameObject.players.find(x => x.id === playerId).roads.length;
+  if ((gameObject.round === 1 && roadCount + 1 === 2) ||
+         (gameObject.round === 2 && roadCount + 1 === 3))
+    return false 
+
+  let buildingPath = gameObject.board.buildings
   let path = gameObject.board.roads
   let road = gameObject.board.roads['road' + roadId]
+
   for (let i = 0; i < road.adjacent.length; i++) {
     let adjacentRoadId = road.adjacent[i]
-    if (
-      path['road' + adjacentRoadId].owner === playerId &&
-      road.owner == null
-    ) {
-      return true
-    }
 
-    let adjacentBuildingsOwned = road.buildings.map(x => buildingPath['b' + x].owner === playerId )
-
-    return adjacentBuildingsOwned.find(x => x === true) == true;
+    if (path['road' + adjacentRoadId].owner === playerId && road.owner == null && gameObject.completedPlacement)  
+      return true 
   }
+  let adjacentBuildingsOwned = [];
+  // If placement is completed, place road next to any other building or road. If it hasn't been completed place only next to the last building you placed.
+  //Also a weird check to see if you've already placed the second building in the second round. 
+  if (gameObject.completedPlacement) {
+    adjacentBuildingsOwned = road.buildings.map(x => buildingPath['b' + x].owner === playerId)
+  } else if (gameObject.round == playerObject.settlements.length){
+    let lastBuildingId = playerObject.settlements[playerObject.settlements.length - 1];
+    adjacentBuildingsOwned = road.buildings.map(x => buildingPath['b' + x].owner === playerId && buildingPath['b' + x].id === lastBuildingId)
+  }
+  return adjacentBuildingsOwned.some(x => x == true)
 }
 /** ***************************
 *                            *
@@ -96,12 +94,11 @@ let _validatePlayerHasResourcesForRoad = function (playerObject) {
 let _validatePlayerHasResourcesForSettlement = function (playerObject) {
   let playerResources = playerObject.resources
 
-  if (
-    playerResources.wood >= 1 &&
-    playerResources.brick >= 1 &&
-    playerResources.wheat >= 1 &&
-    playerResources.sheep >= 1
-  ) { return true } else return false
+  if (playerResources.wood >= 1 && playerResources.brick >= 1 &&
+          playerResources.wheat >= 1 && playerResources.sheep >= 1)  
+    return true  
+  else 
+    return false
 }
 
 let _validatePlayerHasResourcesForCity = function (playerObject) {
@@ -133,13 +130,15 @@ let _validatePlacementRoundsComplete = function (gameObject, playerObject) {
   let placedStructures =
     playerObject.settlements.length + playerObject.roads.length
   let round = gameObject.round
+  let numPlayers = gameObject.players.length
   if (
-    (round == 0 && placedStructures == 2) ||
-    (round == 1 && placedStructures)
+    (round === 0 && placedStructures === numPlayers) ||
+    (round == 1 && placedStructures === numPlayers * 2)
   ) {
     return true
   }
   return false
 }
+
 exports.validateRoad = validatePlayerCanPlaceRoad
 exports.validateBuilding = validatePlayerCanPlaceBuilding

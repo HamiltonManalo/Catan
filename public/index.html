@@ -8,8 +8,7 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script> 
 			var socket = io(); 
-			
-			</script>
+		</script>
 		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 		
 		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
@@ -25,6 +24,10 @@
 			#rolls li:nth-child(odd) {background: #eee;}
 			</style> 
 <body>
+		<div class='panel' id='leftpanel'></div>
+		<div class='panel' id='rightpanel'></div>
+		<div class='panel' id='toppanel'></div>
+		<div class='panel' id='bottompanel'></div>
 <!-- Debugger Tools -->
 		<div class="debugger-tools" id="debugger-tools">
 			<button id="generate-board" class="btn" onclick="gameBoard.generate()">Generate Board</button>
@@ -78,8 +81,8 @@
 			<hr/>
 			<p>How many players?</p>
 			<select class="game-setup-form" id="num-players">
-				<option value="2">2 Players</option>
-				<option value="3" selected="selected">3 Players</option>
+				<option value="2" selected="selected">2 Players</option>
+				<option value="3" >3 Players</option>
 				<option value="4">4 Players</option>
 			</select>
 			<button class="game-setup-btn" id="getBoard">Start Game</button>
@@ -96,19 +99,19 @@
 		<div class='player-options' id='player-options'>
 			<div class='player-info'>
 				<div class='resources'>
-					<div id='wheat'>
+					<div id='wheat' class='resource'>
 						<p>Wheat:</p><p id='wheatqty'>0</p>
 						</div>
-					<div id='wood'>
+					<div id='wood'  class='resource'>
 						<p>Wood:</p><p id='woodqty'>0</p>
 						</div>
-					<div id='brick'>
+					<div id='brick'  class='resource'>
 						<p>Brick:</p><p id='brickqty'>0</p>
 						</div>
-					<div id='sheep'>
+					<div id='sheep'  class='resource'>
 						<p>Sheep:</p><p id='sheepqty'>0</p>
 						</div>
-					<div id='ore'>
+					<div id='ore'  class='resource'>
 						<p>Ore:</p><p id='oreqty'>0</p>
 						</div>
 					</div>
@@ -207,7 +210,7 @@
 		<script src="/js/debugger-tools.js" type="text/javascript"></script>
 		<script src="/js/render.js"></script>
 		<script src="/js/events.js"></script>
-		<script src="/js/newUser.js"></script>
+		<script src="/js/utils.js"></script>
 		<script src="/js/state.js"></script>
 		
 		<script src="/js/websockets.js"></script>
