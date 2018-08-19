@@ -222,6 +222,7 @@ socket.on('placeActionResult', function (validation) {
 
 });
 
-socket.on('nextTurn', function(rolls){
-  showDice(rolls)
+socket.on('nextTurn', function(updateData){
+  showDice(updateData);
+  updateResources(updateData.players.find(player => player.id === CurrentPlayer.id));
 });

@@ -19,15 +19,45 @@ class turnService {
 
     beginTurn() {
         let game = this.DBFunc.getGameObject();
+        
         if(!game.completedPlacement)
             return console.log('no dice, complete placement first');
         let diceRoll = this.diceRoller();
-        let rollResults = {
+        let dataUpdate = {
             roll1: diceRoll[0],
             roll2: diceRoll[1],
             nextActivePlayer: game.currentPlayersTurn
         }
-        this.socket.io.emit('nextTurn', rollResults);
+        let rollTotal = diceRoll[0] + diceRoll[0];
+        let tiles = [];
+        for(let tile in game.board.tiles) {
+           if (tile.chit.value === rollTotal && game.board.robber.location != tile.id)
+            tiles.push(tile);
+        }
+         
+        for(let tile in tiles) {
+            let buildingIds = tile.buildings; 
+            let buildings = [];
+
+            for(let building in game.buildings) {
+                if(building.owner != null && buildingIds.includes(building.id))
+                    buildings.push(building);
+            }
+            buildings.forEach(building => {
+                this.playerService.addResource(tile.resourceType, building.owner);
+                
+                if(building.isCity)
+                    this.playerService.addResource(tile.resourceType, building.owner);
+            })
+        }
+        game = this.DBFunc.getGameObject();
+        dataUpdate.players = game.players;
+        this.socket.io.emit('nextTurn', dataUpdate);
+        /* Award Resources
+        *  Iterate through each tiles chits and find ones with values matching the dice roll, at most it should be 2 tiles 
+        *  Then look through each players settlements, if they own settlements associated with that chit, pay resources
+        *  Some chits may be paying out to 3 buildings so it must iterate through the entire settlement list. 
+        */
     }
 
     /**
@@ -129,13 +159,16 @@ class turnService {
      * @param {number} diceResult 
      * @param {arrayOfOwnedTiles} TilesOwned 
      */
-    awardResources(buildingNodeId, playerId) {
-        let gb = this.gbService;
-        let building = gb.getBuildingNode(buildingNodeId);
-        let tiles = [];
-        building.resources.map(rId => tiles.push(gb.getTileNode(rId)))
-        tiles.map(tile => this.playerService.addResource(tile.resourceType, playerId));
+    AwardStartingResources(game) { 
+        game.players.forEach(player => {
+            let tiles = [];
+            let building =  this.gbService.getBuildingNode(player.settlements[1])
+            building.resources.map(rId => tiles.push(this.gbService.getTileNode(rId)))
+            tiles.map(tile => this.playerService.addResource(tile.resourceType, player.id))
+        });
+    //
     }
+
     /**
      * saves current state of the game. Only for use within the turnService class
      */
@@ -148,10 +181,7 @@ class turnService {
         return response;
     }
 
-    AwardStartingResources(game) { 
-        game.players.forEach(player => {this.awardResources(player.settlements[1], player.id)});
-    //
-    }
+  
 
 /*
 *Private Methods below

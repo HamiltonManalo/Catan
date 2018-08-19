@@ -1,11 +1,7 @@
-let validatePlayerCanPlaceBuilding = function (
-  gameObject,
-  buildingId,
-  playerId
-) {
+let validatePlayerCanPlaceBuilding = function (gameObject, buildingId, playerId) {
   // Check adjacent buildings for owners
   let building = gameObject.board.buildings['b' + buildingId] // Hacky move so I don't have to say the array somewhere. I miss linq
-  let playerObject = gameObject.players.filter(player => player.id === playerId).shift()
+  let playerObject = gameObject.players.find(player => player.id === playerId);
   let resourceCheck = _validatePlayerHasResourcesForSettlement(playerObject)
   let placementsComplete = _validatePlacementRoundsComplete(gameObject, playerObject)
 
