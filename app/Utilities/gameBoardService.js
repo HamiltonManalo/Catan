@@ -20,7 +20,7 @@ Public methods which will be exposed to perform actual changes on the board
    */
   setRoadOwner (roadId, playerId) {
     let cost = ['brick', 'wood'];
-    this.gameObject.board.roads['road' + roadId].owner = playerId;
+    this.gameObject.board.roads[roadId].owner = playerId;
     let playerIndex = this.gameObject.players.findIndex(x => x.id === playerId);
     this.gameObject.players[playerIndex].roads.push(roadId);
     if(this.gameObject.completedPlacement) {
@@ -36,7 +36,7 @@ Public methods which will be exposed to perform actual changes on the board
  */
   setSettlementOwner (buildingId, playerId) {
     let cost = ['brick', 'wood', 'sheep', 'wheat'];
-    this.gameObject.board.buildings['b' + buildingId].owner = playerId;
+    this.gameObject.board.buildings[buildingId].owner = playerId;
     let playerIndex = this.gameObject.players.findIndex(x => x.id === playerId);
     this.gameObject.players[playerIndex].settlements.push(buildingId)
     if(this.gameObject.completedPlacement) {
@@ -50,7 +50,7 @@ Public methods which will be exposed to perform actual changes on the board
  * Retrieving for data only, not for updating values 
  */
   getRoad(roadId) {
-    return this.gameObject.board.roads['road' + roadId];
+    return this.gameObject.board.roads[roadId];
   }
 
   /**
@@ -58,13 +58,13 @@ Public methods which will be exposed to perform actual changes on the board
    * Retrieving for data only, not for updating values 
    */
   getBuildingNode(buildingNodeId) {
-    return this.gameObject.board.buildings['b' + buildingNodeId];
+    return this.gameObject.board.buildings[buildingNodeId];
   }
   /**
    * @param {number} tileNodeId
    * Retrieving for data only, not for updating values 
    */
   getTileNode(tileNodeId) {
-    return this.gameObject.board.tiles['tile' + tileNodeId];
+    return this.gameObject.board.tiles[tileNodeId];
   }
 }

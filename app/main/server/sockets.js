@@ -33,9 +33,10 @@ module.exports = {
         if(canPlaceResult && turnResult) {
             socket.emit('placeActionResult', {'results': true, 'data': data});
         }
-        else
+        else {
             socket.emit('placeActionResult', false);
             console.log('cant build ' + data.buildingType);
+        }
       });
 
         

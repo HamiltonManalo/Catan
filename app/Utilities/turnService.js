@@ -30,26 +30,25 @@ class turnService {
         }
         let rollTotal = diceRoll[0] + diceRoll[0];
         let tiles = [];
-        for(let tile in game.board.tiles) {
-           if (tile.chit.value === rollTotal && game.board.robber.location != tile.id)
+        game.board.tiles.forEach(tile => {
+           if (tile.chit != null && tile.chit.value === rollTotal && game.board.robber.location != tile.id)
             tiles.push(tile);
-        }
+        })
          
-        for(let tile in tiles) {
+        tiles.forEach(tile => {
             let buildingIds = tile.buildings; 
-            let buildings = [];
+            
+            buildingIds.forEach(buildingNodeId => {
+                let building = game.board.buildings[buildingNodeId];
+                if(building.owner != null) {
 
-            for(let building in game.buildings) {
-                if(building.owner != null && buildingIds.includes(building.id))
-                    buildings.push(building);
-            }
-            buildings.forEach(building => {
                 this.playerService.addResource(tile.resourceType, building.owner);
                 
                 if(building.isCity)
                     this.playerService.addResource(tile.resourceType, building.owner);
+                }
             })
-        }
+        })
         game = this.DBFunc.getGameObject();
         dataUpdate.players = game.players;
         this.socket.io.emit('nextTurn', dataUpdate);

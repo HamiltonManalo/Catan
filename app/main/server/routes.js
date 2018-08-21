@@ -77,6 +77,8 @@ app.post('/confirmBuild', jsonParser, function(req, res) {
         result = service.setRoadOwner(data.nodeId, data.playerId);
     } else if(data.buildingType === 'city') {
         console.log('city confirmation to build');
+    } else if(data.buildingType === 'devCard') {
+        console.log('dev cards dont exist yet');
     }
     
     if(result){

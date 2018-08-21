@@ -1,6 +1,6 @@
 let validatePlayerCanPlaceBuilding = function (gameObject, buildingId, playerId) {
   // Check adjacent buildings for owners
-  let building = gameObject.board.buildings['b' + buildingId] // Hacky move so I don't have to say the array somewhere. I miss linq
+  let building = gameObject.board.buildings[buildingId] // Hacky move so I don't have to say the array somewhere. I miss linq
   let playerObject = gameObject.players.find(player => player.id === playerId);
   let resourceCheck = _validatePlayerHasResourcesForSettlement(playerObject)
   let placementsComplete = _validatePlacementRoundsComplete(gameObject, playerObject)
@@ -8,8 +8,7 @@ let validatePlayerCanPlaceBuilding = function (gameObject, buildingId, playerId)
   // If player doesn't have resources and it isn't a placement round return false
   if (gameObject.completedPlacement && !resourceCheck) return false
 
-  let settlementCount = gameObject.players.find(x => x.id === playerId)
-    .settlements.length
+  let settlementCount = gameObject.players.find(x => x.id === playerId).settlements.length
 
   if ((gameObject.round === 1 && settlementCount + 1 === 2) ||
       (gameObject.round === 2 && settlementCount + 1 === 3))  
@@ -19,7 +18,7 @@ let validatePlayerCanPlaceBuilding = function (gameObject, buildingId, playerId)
   for (let j = 0; j < building.adjacent.length; j++) {
     let adjacentBuildingId = building.adjacent[j]
 
-    if (path['b' + adjacentBuildingId].owner != null) {
+    if (path[ adjacentBuildingId].owner != null) {
       return false
     }
   }
@@ -28,7 +27,7 @@ let validatePlayerCanPlaceBuilding = function (gameObject, buildingId, playerId)
   for (let i = 0; i < building.roads.length; i++) {
     let adjacentRoadId = building.roads[i]
 
-    if ((path['road' + adjacentRoadId].owner === playerId &&
+    if ((path[adjacentRoadId].owner === playerId &&
         building.owner === null) || !placementsComplete) {
       return true
     } 
@@ -54,24 +53,24 @@ let validatePlayerCanPlaceRoad = function (gameObject, roadId, playerId) {
          (gameObject.round === 2 && roadCount + 1 === 3))
     return false 
 
-  let buildingPath = gameObject.board.buildings
+  let buildingNodes = gameObject.board.buildings
   let path = gameObject.board.roads
-  let road = gameObject.board.roads['road' + roadId]
+  let road = gameObject.board.roads[roadId]
 
   for (let i = 0; i < road.adjacent.length; i++) {
     let adjacentRoadId = road.adjacent[i]
 
-    if (path['road' + adjacentRoadId].owner === playerId && road.owner == null && gameObject.completedPlacement)  
+    if (path[adjacentRoadId].owner === playerId && road.owner == null && gameObject.completedPlacement)  
       return true 
   }
   let adjacentBuildingsOwned = [];
   // If placement is completed, place road next to any other building or road. If it hasn't been completed place only next to the last building you placed.
   //Also a weird check to see if you've already placed the second building in the second round. 
   if (gameObject.completedPlacement) {
-    adjacentBuildingsOwned = road.buildings.map(x => buildingPath['b' + x].owner === playerId)
+    adjacentBuildingsOwned = road.buildings.map(x => buildingNodes[x].owner === playerId)
   } else if (gameObject.round == playerObject.settlements.length){
     let lastBuildingId = playerObject.settlements[playerObject.settlements.length - 1];
-    adjacentBuildingsOwned = road.buildings.map(x => buildingPath['b' + x].owner === playerId && buildingPath['b' + x].id === lastBuildingId)
+    adjacentBuildingsOwned = road.buildings.map(x => buildingNodes[x].owner === playerId && buildingNodes[x].id === lastBuildingId)
   }
   return adjacentBuildingsOwned.some(x => x == true)
 }

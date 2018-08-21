@@ -27,7 +27,7 @@ var renderRoads = function () {
   let r = 0;// iterator
   while (r < gameBoard.numRoads) {
     
-    var roadObject = gameBoard.roads['road' + r];
+    var roadObject = gameBoard.roads[r];
     let origin = document.getElementById('origin');
     let node = document.createElement('div');
 
@@ -48,7 +48,7 @@ var renderRoads = function () {
 var renderBuildings = function () {
   let b = 0; // iterator
   while (b < gameBoard.numBuildings) {
-    var buildingObject = gameBoard.buildings['b' + b];
+    var buildingObject = gameBoard.buildings[ b];
 
     let origin = document.getElementById('origin');
     let node = document.createElement('div');
@@ -70,7 +70,7 @@ var renderTiles = function () {
   let origin = document.getElementById('origin');
   var n = 0; // iterator
   while (n < gameBoard.numTiles) {
-    var tileObject = gameBoard.tiles['tile' + n];
+    var tileObject = gameBoard.tiles[n];
     let newTile = document.createElement('div');
   
     newTile.setAttribute('data-tile-id', tileObject.id);
