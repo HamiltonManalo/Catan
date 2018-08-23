@@ -1,4 +1,4 @@
-const validator = require('./../../Utilities/validators.js');
+const validator = require('./../../game-logic/validators.js');
 const db = require('../../database/dbMock');
 // const io = require('../index').socket;
 const generator = require('../../Utilities/generators');
@@ -7,7 +7,6 @@ module.exports = {
   start: function (io) {
     io.on('connection', function (socket) {
       this.io = socket;
-      socket.emit('test', {true: true});
       socket.on('validatePlaceAction', function (data) {
 
         let turnResult;
@@ -27,7 +26,7 @@ module.exports = {
         } else if(data.buildingType === 'road') {
             canPlaceResult = validator.validateRoad(gameObject, data.nodeId, data.playerId);
         } else if(data.buildingType === 'city') {
-            //do other stuff
+            canPlaceResult = validator.validateCity(gameObject, data.nodeId, data.playerId);
         }
 
         if(canPlaceResult && turnResult) {
@@ -38,7 +37,7 @@ module.exports = {
             console.log('cant build ' + data.buildingType);
         }
       });
-
+      
         
       // New events above this line \\
     }.bind(this));

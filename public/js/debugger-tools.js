@@ -3,6 +3,29 @@
     ------------------------------------------------------
     Called from gameBoard.generate();
 */
+
+function moveRobber(targetNode) {
+  if(targetNode > gameBoard.tiles.length || gameState.debuggerEnabled != true)
+    return;
+  let tile = document.querySelector(`div[data-tile-id='${targetNode}']`);
+  let robber = document.getElementById('robber')
+  if(!robber)
+    robber = document.createElement('div');
+  let origin = document.getElementById('origin');
+  robber.classList.add('robber');
+  robber.style = tile.style
+  // robber.style.left = tile.style.left != "" ? tile.style.left : '';
+  // robber.style.right = tile.style.right != '' ? tile.style.right : '';
+  robber.setAttribute('id','robber');
+  origin.appendChild(robber)
+}
+function debugTest() {
+
+  socket.emit('debug', 'test')
+}
+socket.on('test', function(data){
+  console.log('debug')
+})
 var debuggerTools = function() {
 
   if(!gameBoard.tiles) return;
@@ -11,9 +34,13 @@ var debuggerTools = function() {
   //   .attr('max',(gameBoard.config.maxTiles - 1))
   //   .attr('maxlength',(gameBoard.config.maxTiles.toString()).length)
   //   .val(gameBoard.robber.location.id);
+
+
+
   $('#road-id')
     .attr('max',(gameBoard.numRoads - 1))
-    .attr('maxlength',(gameBoard.numRoads.toString()).length);
+    .attr('maxlength',(gameBoard.numRoads.toString()).length)
+    ;
 
   // Make sure user can't set a tileID that doesn't exist
   $('#move-robber').on('blur',function(){
@@ -45,7 +72,7 @@ var debuggerTools = function() {
   // Submit new robber location
   $('#move-robber-submit').on('click', function() {
     var newTileID = $('#move-robber').val();
-    var newTile = gameBoard.tiles["tile"+newTileID];
+    var newTile = gameBoard.tiles[newTileID];
     gameBoard.robber.newLocation(newTile);
   });
 
@@ -55,7 +82,7 @@ var debuggerTools = function() {
   // Submit new road owner
   $('#road-submit').on('click', function() {
     var roadID = $('#road-id').val();
-    var roadObject = roads["road"+roadID];
+    var roadObject = roads[roadID];
     var playerID = $('#road-player').val();
     var playerObject = null;
     if (playerID < players.length) {
@@ -82,21 +109,21 @@ var debuggerTools = function() {
   // Log road object on click
   $('.road').on('click',function(){
     $roadId = $(this).attr('data-road-id');
-    $roadObject = gameBoard.roads["road"+$roadId];
+    $roadObject = gameBoard.roads[$roadId];
     console.log($roadObject);
   });
 
   // Log building object on click
   $('.building').on('click',function(){
     $buildingId = $(this).attr('data-building-id');
-    $buildingObject = gameBoard.buildings["b"+$buildingId];
+    $buildingObject = gameBoard.buildings[$buildingId];
     console.log($buildingObject);
   });
 
   // Log tile object on click
   $('.resource-tile').on('click',function(){
     $tileId = $(this).attr('data-tile-id');
-    $tileObject = gameBoard.tiles["tile"+$tileId];
+    $tileObject = gameBoard.tiles[$tileId];
     console.log($tileObject);
   });
 
@@ -104,7 +131,7 @@ var debuggerTools = function() {
   $('.building').on('mouseover', function(){
     $(this).addClass('hover');
     $buildingId = $(this).attr('data-building-id');
-    $buildingObject = gameBoard.buildings["b"+$buildingId];
+    $buildingObject = gameBoard.buildings[$buildingId];
     // Highlight adjacent buildings
     for (var b = 0; b < $buildingObject.adjacent.length; b++) {
       let x = $buildingObject.adjacent[b];
@@ -147,7 +174,7 @@ var debuggerTools = function() {
   $('.road').on('mouseover', function(){
     $(this).addClass('hover');
     $roadId = $(this).attr('data-road-id');
-    $roadObject = gameBoard.roads["road"+$roadId];
+    $roadObject = gameBoard.roads[$roadId];
     // Highlight adjacent buildings
     for (var b = 0; b < $roadObject.buildings.length; b++) {
       $adjacentBuilding = $roadObject.buildings[b].getElement();
@@ -163,7 +190,7 @@ var debuggerTools = function() {
   $('.road').on('mouseout', function(){
     $(this).removeClass('hover');
     $roadId = $(this).attr('data-road-id');
-    $roadObject = gameBoard.roads["road"+$roadId];
+    $roadObject = gameBoard.roads[$roadId];
     // Highlight adjacent buildings
     for (var b = 0; b < $roadObject.buildings.length; b++) {
       $adjacentBuilding = $roadObject.buildings[b].getElement();

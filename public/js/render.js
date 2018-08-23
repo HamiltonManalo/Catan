@@ -1,16 +1,10 @@
 // creates DOM elements for each road, appends to #origin
-function generateBoardHTML (Board) {
-  gameState = JSON.parse(Board);
+function generateBoardHTML (state) {
+  gameState = JSON.parse(state);
   if(gameState.board != null) {
+    gameState = JSON.parse(state);
     gameBoard = gameState.board;
-    CurrentPlayer = gameState.players.find(player => player.activePlayer == true);
-  } else {
-    gameBoard = JSON.parse(Board);
-    httpRequest('http://localhost:8080/getUser',function(user){
-              ThisPlayer = CurrentPlayer = JSON.parse(user);
-              setPanels(CurrentPlayer.id);
-              
-    });
+    
   }
   
   // Create DOM elements for tiles, roads, and buildings

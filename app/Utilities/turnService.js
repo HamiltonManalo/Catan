@@ -22,13 +22,14 @@ class turnService {
         
         if(!game.completedPlacement)
             return console.log('no dice, complete placement first');
+            
         let diceRoll = this.diceRoller();
         let dataUpdate = {
             roll1: diceRoll[0],
             roll2: diceRoll[1],
             nextActivePlayer: game.currentPlayersTurn
         }
-        let rollTotal = diceRoll[0] + diceRoll[0];
+        let rollTotal = diceRoll[0] + diceRoll[1];
         let tiles = [];
         game.board.tiles.forEach(tile => {
            if (tile.chit != null && tile.chit.value === rollTotal && game.board.robber.location != tile.id)
@@ -52,11 +53,6 @@ class turnService {
         game = this.DBFunc.getGameObject();
         dataUpdate.players = game.players;
         this.socket.io.emit('nextTurn', dataUpdate);
-        /* Award Resources
-        *  Iterate through each tiles chits and find ones with values matching the dice roll, at most it should be 2 tiles 
-        *  Then look through each players settlements, if they own settlements associated with that chit, pay resources
-        *  Some chits may be paying out to 3 buildings so it must iterate through the entire settlement list. 
-        */
     }
 
     /**

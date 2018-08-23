@@ -5,6 +5,7 @@ const paths = require('path');
 const generator = require('./../../Utilities/generators');
 const db = require('../../database/dbMock');
 const state = require('../../../gbstate.json');
+const validator = require('./../../game-logic/validators');
 
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
@@ -23,16 +24,6 @@ app.get('/newUser', function(req, res){
     res.sendFile(paths.join(__dirname, '../../../public/', 'newUser.html'));
 });
 
-
-let counter = 0;
-function count() {
-    if(counter > 3) {
-        counter = 0; 
-        return 4;
-    } else {
-        return counter++;
-    }
-}
 app.get('/getUser', function(req, res){ 
     let user;
     let user1;
@@ -42,7 +33,7 @@ app.get('/getUser', function(req, res){
     user.activePlayer = true;
     db.savePlayers([user, user1]);//send as array because you're only producing 1 player right now
     res.status(200);
-    res.json(user);
+    res.json([user, user1]);
 });
 
 app.get('/generateBoard', function(req, res){
@@ -50,7 +41,7 @@ app.get('/generateBoard', function(req, res){
     var board = generator.generateBoard();
     db.saveGameboard(board);
     res.status(200);
-    res.json(board);
+    res.json(db.getGameObject());
     // let gameState = state;
     // db.saveGameObject(gameState);
     // res.status(200);
@@ -77,14 +68,17 @@ app.post('/confirmBuild', jsonParser, function(req, res) {
         result = service.setRoadOwner(data.nodeId, data.playerId);
     } else if(data.buildingType === 'city') {
         console.log('city confirmation to build');
+        result = service.upgradeSettlement(data.nodeId, data.playerId);
     } else if(data.buildingType === 'devCard') {
         console.log('dev cards dont exist yet');
     }
-    
+
+    //Need to send out socket emit to update rest of players with new data after successful action
+    let updatedGameObject = db.getGameObject();
     if(result){
-        
         res.status(200);
-        res.json(result);
+        res.json(updatedGameObject);
+        
     } else {
         res.status(400);
         res.json(false);
@@ -103,10 +97,12 @@ app.post('/endTurn', jsonParser, function(req, res) {
             res.sendStatus(400);
             return
         }
-        res.send(turnResult.nextActivePlayer);
+        game = db.getGameObject();
+        turnResult = game;
+        delete turnResult.result;
+        res.send(turnResult);
         turnService.beginTurn();
     }
-    
 });
 
 app.get('/roll', jsonParser, function(req, res) { 

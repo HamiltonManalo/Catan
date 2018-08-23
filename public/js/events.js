@@ -9,8 +9,6 @@ function showDecisionDialog(dataObject) {
   <button class="confirm-btn" id="choice-yes">Place ${dialogHeader}</button>
   <button class="confirm-btn" id="choice-no">Don't place ${dialogHeader}</button>`;
   
-  
-  
       let yesBtn = document.getElementById('choice-yes');
       yesBtn.addEventListener('click', function () {
         
@@ -36,10 +34,10 @@ function showDecisionDialog(dataObject) {
         owner.value = dataObject.playerId;
         structure.setAttributeNode(owner); 
         element.innerHTML = null;
-        updateResources(result)
+        let playerIndex = gameState.players.findIndex(x => x.id === dataObject.playerId)
+        updateResources(result.players[playerIndex]);
+        gameState = result;
       });
-      
- 
     },
     { once: true }
   );
@@ -187,7 +185,7 @@ function showDice(rolls) {
       element.innerHTML = null
       element.setAttribute('id', 'dialog-box-hidden');
     
-    }, 2500)
+    }, 1500)
   };
 
 

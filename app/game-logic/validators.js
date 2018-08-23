@@ -41,7 +41,7 @@ let validatePlayerCanPlaceBuilding = function (gameObject, buildingId, playerId)
 
 // Need validation to make sure players place second round road attached to second round building
 let validatePlayerCanPlaceRoad = function (gameObject, roadId, playerId) {
-  let playerObject = gameObject.players.filter(player => player.id === playerId).shift();
+  let playerObject = gameObject.players.find(player => player.id === playerId);
   let resourceCheck = _validatePlayerHasResourcesForRoad(playerObject)
 
   // Check to make sure they aren't placing too many times on the first turn
@@ -74,43 +74,64 @@ let validatePlayerCanPlaceRoad = function (gameObject, roadId, playerId) {
   }
   return adjacentBuildingsOwned.some(x => x == true)
 }
+/**
+ * Validate player can place building at target node location
+ * @param {object} gameObject 
+ * @param {number} buildingNodeId 
+ * @param {number} playerId 
+ */
+let validatePlayerCanPlaceCity = function(gameObject, buildingNodeId, playerId){
+  let building = gameObject.buildings[buildingNodeId];
+  let playerObject = gameObject.players.find(player => player.id === playerId);
+  if(building.owner != playerId)
+    return false;
+  
+  if(_validatePlayerHasResourcesForCity(playerObject))
+    return true;
+  
+  console.log('Error with city validation');
+  return false;
+  
+}
 /** ***************************
 *                            *
 *    Resource Verfication    *
 *                            *
 *****************************/
 let _validatePlayerHasResourcesForRoad = function (playerObject) {
-  let playerResources = playerObject.resources
+  let playerResources = playerObject.resources;
 
-  if (playerResources.wood >= 1 && playerResources.brick >= 1) return true
-  else return false
+  if (playerResources.wood >= 1 && playerResources.brick >= 1) 
+    return true;
+  else 
+    return false;
 }
 
 let _validatePlayerHasResourcesForSettlement = function (playerObject) {
   let playerResources = playerObject.resources
 
-  if (playerResources.wood >= 1 && playerResources.brick >= 1 &&
-          playerResources.wheat >= 1 && playerResources.sheep >= 1)  
-    return true  
+  if (playerResources.wood >= 1 && playerResources.brick >= 1 && playerResources.wheat >= 1 && playerResources.sheep >= 1) 
+    return true;
   else 
-    return false
+    return false;
 }
 
 let _validatePlayerHasResourcesForCity = function (playerObject) {
   let playerResources = playerObject.resources
 
-  if (playerResources.wheat >= 2 && playerResources.ore >= 2) return true
-  else return false
+  if (playerResources.wheat >= 2 && playerResources.ore >= 3)
+    return true;
+  else  
+    return false;
 }
 
 let _validatePlayerHasResourcesForDevCard = function (playerObject) {
   let playerResources = playerObject.resources
 
-  if (
-    playerResources.sheep >= 1 &&
-    playerResources.wheat >= 1 &&
-    playerResources.ore >= 1
-  ) { return true } else return false
+  if (playerResources.sheep >= 1 && playerResources.wheat >= 1 && playerResources.ore >= 1)  
+    return true;
+  else 
+    return false;
 }
 
 /**********************************
@@ -122,18 +143,15 @@ let _validatePlayerHasResourcesForDevCard = function (playerObject) {
 let _validatePlacementRoundsComplete = function (gameObject, playerObject) {
   // If round 0, each player should have 1 settlement and 1 road
   // If round 1, each player should have 2 settlements and 2 roads
-  let placedStructures =
-    playerObject.settlements.length + playerObject.roads.length
-  let round = gameObject.round
-  let numPlayers = gameObject.players.length
-  if (
-    (round === 0 && placedStructures === numPlayers) ||
-    (round == 1 && placedStructures === numPlayers * 2)
-  ) {
-    return true
+  let placedStructures = playerObject.settlements.length + playerObject.roads.length;
+  let round = gameObject.round;
+  let numPlayers = gameObject.players.length;
+  if ((round === 0 && placedStructures === numPlayers) || (round == 1 && placedStructures === numPlayers * 2)) {
+    return true;
   }
-  return false
+  return false;
 }
 
-exports.validateRoad = validatePlayerCanPlaceRoad
-exports.validateBuilding = validatePlayerCanPlaceBuilding
+exports.validateRoad = validatePlayerCanPlaceRoad;
+exports.validateBuilding = validatePlayerCanPlaceBuilding;
+exports.validateCity = validatePlayerCanPlaceCity;
