@@ -59,7 +59,7 @@ Public methods which will be exposed to perform actual changes on the board
     let cost = ['ore', 'ore', 'ore', 'wheat', 'wheat']
 
     this.gameObject.board.buildings[buildingNodeId].isCity = true;
-    this.gameObject.players[playerIndex].cities.push(buildingId)
+    this.gameObject.players[playerIndex].cities.push(buildingNodeId)
     let idxToRemove = this.gameObject.players[playerIndex].settlements.indexOf(buildingNodeId);
     let result = this.gameObject.players[playerindex].settlements.splice(idxToRemove, 1);
     console.log('building upgraded to city nodeID removed from settlements should be ' + buildingNodeId + " node removed was " + result);

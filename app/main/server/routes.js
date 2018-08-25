@@ -6,7 +6,8 @@ const generator = require('./../../Utilities/generators');
 const db = require('../../database/dbMock');
 const state = require('../../../gbstate.json');
 const validator = require('./../../game-logic/validators');
-
+const sockets = require('../index')
+const debug = require('./../../Utilities/debug');
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
 ///////////////////////////////////////////////////////////////////////////
@@ -25,27 +26,34 @@ app.get('/newUser', function(req, res){
 });
 
 app.get('/getUser', function(req, res){ 
-    let user;
-    let user1;
-    
-    user = generator.player(0);
-    user1 = generator.player(1);
-    user.activePlayer = true;
-    db.savePlayers([user, user1]);//send as array because you're only producing 1 player right now
-    res.status(200);
-    res.json([user, user1]);
-});
+    let existingUsers = db.getPlayers();
+    if(!existingUsers[0]) {
+
+        let user;
+        let user1;
+        
+        user = generator.player(0);
+        user1 = generator.player(1);
+        user.activePlayer = true;
+        db.savePlayers([user, user1]);//send as array because you're only producing 1 player right now
+        res.status(200);
+        res.json([user, user1]);
+    } else {
+        res.status(200);
+        res.json(existingUsers);
+    }
+    });
 
 app.get('/generateBoard', function(req, res){
-
-    var board = generator.generateBoard();
-    db.saveGameboard(board);
-    res.status(200);
-    res.json(db.getGameObject());
-    // let gameState = state;
-    // db.saveGameObject(gameState);
+   
+    // var board = generator.generateBoard();
+    // db.saveGameboard(board);
     // res.status(200);
-    // res.json(gameState);
+    // res.json(db.getGameObject());
+    let gameState = debug.makeState(state);
+    db.saveGameObject(gameState);
+    res.status(200);
+    res.json(gameState);
 });
 /********************************************
 **The data will look like                  **

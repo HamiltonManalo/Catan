@@ -81,7 +81,7 @@ let validatePlayerCanPlaceRoad = function (gameObject, roadId, playerId) {
  * @param {number} playerId 
  */
 let validatePlayerCanPlaceCity = function(gameObject, buildingNodeId, playerId){
-  let building = gameObject.buildings[buildingNodeId];
+  let building = gameObject.board.buildings[buildingNodeId];
   let playerObject = gameObject.players.find(player => player.id === playerId);
   if(building.owner != playerId)
     return false;

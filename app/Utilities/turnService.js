@@ -50,6 +50,8 @@ class turnService {
                 }
             })
         })
+        
+        this.SaveState(game)
         game = this.DBFunc.getGameObject();
         dataUpdate.players = game.players;
         this.socket.io.emit('nextTurn', dataUpdate);
@@ -61,7 +63,6 @@ class turnService {
      */   
     endTurn() { 
         let game = this.DBFunc.getGameObject();
-        this.SaveState(game)
         let placementComplete = game.completedPlacement;
         let playerArray = game.players;
         let lastPlayer = playerArray.length -1;

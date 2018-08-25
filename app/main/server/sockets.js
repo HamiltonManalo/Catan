@@ -2,9 +2,10 @@ const validator = require('./../../game-logic/validators.js');
 const db = require('../../database/dbMock');
 // const io = require('../index').socket;
 const generator = require('../../Utilities/generators');
-
+var sockets;
 module.exports = {
   start: function (io) {
+      sockets = io;
     io.on('connection', function (socket) {
       this.io = socket;
       socket.on('validatePlaceAction', function (data) {
@@ -42,5 +43,7 @@ module.exports = {
       // New events above this line \\
     }.bind(this));
 },
-io: null
+io: null,
+io2: sockets
 };
+console.log(sockets);
