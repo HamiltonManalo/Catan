@@ -4,11 +4,16 @@ const app = require('./server/routes.js');
 const server = app.listen(8080, function () { console.log('Catan is being served on port 8080!'); });
 const socketio = require('socket.io');
 const io = require('./server/sockets');
-
 let sockets = socketio.listen(server);
+app.io = sockets;
 const socket = io.start(sockets);
 
-module.exports.io = socket;
+module.exports.io = function() {
+  if(sockets) 
+  return sockets;
+  else
+  return
+}
 
 
 

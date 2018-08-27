@@ -1,13 +1,11 @@
-const validator = require('./../../Utilities/validators.js');
+const validator = require('./../../game-logic/validators.js');
 const db = require('../../database/dbMock');
 // const io = require('../index').socket;
 const generator = require('../../Utilities/generators');
-
 module.exports = {
   start: function (io) {
     io.on('connection', function (socket) {
       this.io = socket;
-      socket.emit('test', {true: true});
       socket.on('validatePlaceAction', function (data) {
 
         let turnResult;
@@ -27,20 +25,38 @@ module.exports = {
         } else if(data.buildingType === 'road') {
             canPlaceResult = validator.validateRoad(gameObject, data.nodeId, data.playerId);
         } else if(data.buildingType === 'city') {
-            //do other stuff
+            canPlaceResult = validator.validateCity(gameObject, data.nodeId, data.playerId);
         }
 
         if(canPlaceResult && turnResult) {
             socket.emit('placeActionResult', {'results': true, 'data': data});
         }
-        else
+        else {
             socket.emit('placeActionResult', false);
             console.log('cant build ' + data.buildingType);
+        }
+       
       });
+      
+      socket.on('moveRobber', tileNodeId => {
+          let gameObject = db.getGameObject();
+          let canMoveResult = validator.validateCanMoveRobber(tileNodeId, gameObject)
+          if(canMoveResult) {
+              socket.emit('robberActionResult', true);
+          } else {
+              socket.emit('robberActionResult', false);
+          }
+      })
 
-        
+      socket.on('disconnect', () => {
+        let gameObject = db.getGameObject();
+        gameObject.socketId = null;
+        db.saveGameObject(gameObject);
+    })
+    
       // New events above this line \\
     }.bind(this));
+    return io;
 },
 io: null
 };

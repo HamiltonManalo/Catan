@@ -14,11 +14,11 @@ function Player(playerID, uuid) {
   this.cities = [];
   // Player resource hand
   this.resources = {
-      sheep: 0,
-      wheat: 0,
-      wood: 0,
-      ore: 0,
-      brick: 0,      
+      sheep: 1,
+      wheat: 1,
+      wood: 1,
+      ore: 1,
+      brick: 1,      
   };
 
 };

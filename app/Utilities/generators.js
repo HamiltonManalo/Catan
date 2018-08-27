@@ -7,6 +7,8 @@ const turnService = require('./turnService');
 const fs = require('fs');
 const diceRoller = require('./../game-logic/diceRolling');
 const socket = require('./../main/server/sockets');
+const deckBuilder = require('../game-logic/devCards');
+const EventService = require('./eventService');
 // This file will contain the logic that generates new things, IE Players and gameboards. 
 
 
@@ -29,7 +31,8 @@ function returnGameboardService() {
 function returnTurnService() {
   let tempPs = returnPlayerService();
   let tempGbs = returnGameboardService();
-  return new turnService(DB, tempPs, tempGbs, socket, fs, diceRoller);
+  let tempEs = returnEventService(); 
+  return new turnService(DB, tempPs, tempGbs, socket, fs, diceRoller, tempEs);
 }
 
 function returnPlayerService() {
@@ -39,6 +42,19 @@ function returnPlayerService() {
 function generateBoard() { 
   return gb.generateBoard();
 }
+
+function returnDevCardDeck() {
+  let config = deckBuilder.config;
+  return new deckBuilder.deck(config);
+  
+}
+
+function returnEventService() {
+  let tempGbs = returnGameboardService();
+  let tempPs = returnPlayerService();
+  return new EventService(DB, socket.io, tempPs, tempGbs);
+}
+
 //Generating Yeets all over the server
 module.exports.uuid = uuid; 
 module.exports.player = player
@@ -55,3 +71,7 @@ module.exports.generateBoard = generateBoard;
  * returns new player service instance
  */
 module.exports.playerService = returnPlayerService;
+
+module.exports.deck = returnDevCardDeck;
+
+module.exports.eventService = returnEventService;

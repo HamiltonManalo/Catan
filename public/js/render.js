@@ -1,23 +1,17 @@
 // creates DOM elements for each road, appends to #origin
-function generateBoardHTML (Board) {
-  gameState = JSON.parse(Board);
+function generateBoardHTML (state) {
+  gameState = JSON.parse(state);
   if(gameState.board != null) {
+    gameState = JSON.parse(state);
     gameBoard = gameState.board;
-    CurrentPlayer = gameState.players.find(player => player.activePlayer == true);
-  } else {
-    gameBoard = JSON.parse(Board);
-    httpRequest('http://localhost:8080/getUser',function(user){
-              ThisPlayer = CurrentPlayer = JSON.parse(user);
-              setPanels(CurrentPlayer.id);
-              
-    });
+    
   }
   
   // Create DOM elements for tiles, roads, and buildings
   renderTiles();
   renderRoads();
   renderBuildings();
-
+  placeRobber(gameBoard.robberTileLocationId);
   console.log('--------------------------------------');
   console.log('Gameboard Generated');
   console.log('--------------------------------------');
@@ -27,7 +21,7 @@ var renderRoads = function () {
   let r = 0;// iterator
   while (r < gameBoard.numRoads) {
     
-    var roadObject = gameBoard.roads['road' + r];
+    var roadObject = gameBoard.roads[r];
     let origin = document.getElementById('origin');
     let node = document.createElement('div');
 
@@ -36,7 +30,7 @@ var renderRoads = function () {
     node.style.right = roadObject.display.x + 'px';
     node.setAttribute('data-owner', roadObject.owner)
     node.setAttribute('data-road-id', roadObject.id);
-    node.addEventListener('click', buildRoad.bind(null, r)
+    node.addEventListener('click', buildRoad
   );
     origin.appendChild(node)
 
@@ -48,7 +42,7 @@ var renderRoads = function () {
 var renderBuildings = function () {
   let b = 0; // iterator
   while (b < gameBoard.numBuildings) {
-    var buildingObject = gameBoard.buildings['b' + b];
+    var buildingObject = gameBoard.buildings[ b];
 
     let origin = document.getElementById('origin');
     let node = document.createElement('div');
@@ -58,7 +52,7 @@ var renderBuildings = function () {
     node.style.right = buildingObject.display.x + 'px';
     node.setAttribute('data-building-id', buildingObject.id);
     node.setAttribute('data-owner', buildingObject.owner)
-    node.addEventListener('click',buildSettlement.bind(null, b));
+    node.addEventListener('click',buildSettlement);
     origin.appendChild(node)
 
     b++;
@@ -70,7 +64,7 @@ var renderTiles = function () {
   let origin = document.getElementById('origin');
   var n = 0; // iterator
   while (n < gameBoard.numTiles) {
-    var tileObject = gameBoard.tiles['tile' + n];
+    var tileObject = gameBoard.tiles[n];
     let newTile = document.createElement('div');
   
     newTile.setAttribute('data-tile-id', tileObject.id);
@@ -95,7 +89,7 @@ var renderTiles = function () {
       chitProbability.className = 'chit-probability';
       chitProbability.innerText = tileObject.chit.probability;
       newTile.append(chitAlpha, chitValue, chitProbability);
-
+      newTile.addEventListener('click', moveRobber);
       if (tileObject.chit.value === 6 || tileObject.chit.value === 8) {
         newTile.classList.add('resource-hot');
       }

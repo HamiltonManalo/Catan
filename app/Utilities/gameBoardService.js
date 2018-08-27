@@ -20,24 +20,27 @@ Public methods which will be exposed to perform actual changes on the board
    */
   setRoadOwner (roadId, playerId) {
     let cost = ['brick', 'wood'];
-    this.gameObject.board.roads['road' + roadId].owner = playerId;
     let playerIndex = this.gameObject.players.findIndex(x => x.id === playerId);
+
+    this.gameObject.board.roads[roadId].owner = playerId;
     this.gameObject.players[playerIndex].roads.push(roadId);
+
     if(this.gameObject.completedPlacement) {
       cost.forEach(resource => this.playerService.removeResource(resource, playerId));
     }
     this.DBService.saveGameObject(this.gameObject);
     return this.gameObject.players[playerIndex]; // return true if save was successful. Return false if failure
   }
-/**
- * Takes in the building node ID and playerID and changes the owner of the settlement. Performs no validation  
- * @param {number} buildingId 
- * @param {number} playerId
- */
+  /**
+   * Takes in the building node ID and playerID and changes the owner of the settlement. Performs no validation  
+   * @param {number} buildingId 
+   * @param {number} playerId
+   */
   setSettlementOwner (buildingId, playerId) {
     let cost = ['brick', 'wood', 'sheep', 'wheat'];
-    this.gameObject.board.buildings['b' + buildingId].owner = playerId;
     let playerIndex = this.gameObject.players.findIndex(x => x.id === playerId);
+
+    this.gameObject.board.buildings[buildingId].owner = playerId;
     this.gameObject.players[playerIndex].settlements.push(buildingId)
     if(this.gameObject.completedPlacement) {
       cost.forEach(resource => this.playerService.removeResource(resource, playerId));
@@ -45,12 +48,35 @@ Public methods which will be exposed to perform actual changes on the board
     this.DBService.saveGameObject(this.gameObject);
     return this.gameObject.players[playerIndex]; // return true if save was successful. Return false if failure
   }
+
+  /**
+   * Upgrades settlement to city. performs no validations
+   * @param {number} buildingNodeId
+   * @param {number} playerId
+   */
+  upgradeSettlement(buildingNodeId, playerId) {
+    let playerIndex = this.gameObject.players.findIndex(x => x.id === playerId);
+    let cost = ['ore', 'ore', 'ore', 'wheat', 'wheat']
+
+    this.gameObject.board.buildings[buildingNodeId].isCity = true;
+    this.gameObject.players[playerIndex].cities.push(buildingNodeId)
+    let idxToRemove = this.gameObject.players[playerIndex].settlements.indexOf(buildingNodeId);
+    let result = this.gameObject.players[playerindex].settlements.splice(idxToRemove, 1);
+    console.log('building upgraded to city nodeID removed from settlements should be ' + buildingNodeId + " node removed was " + result);
+    this.DBService.saveGameObject(this.gameObject);
+    return this.gameObject.players[playerIndex]; // return true if save was successful. Return false if failure
+  }
+
+  moveRobber(tileNodeId) {
+    this.gameObject.robberTileLocationId = tileNodeId; 
+  }
+
 /**
  * @param {number} roadId
  * Retrieving for data only, not for updating values 
  */
   getRoad(roadId) {
-    return this.gameObject.board.roads['road' + roadId];
+    return this.gameObject.board.roads[roadId];
   }
 
   /**
@@ -58,13 +84,13 @@ Public methods which will be exposed to perform actual changes on the board
    * Retrieving for data only, not for updating values 
    */
   getBuildingNode(buildingNodeId) {
-    return this.gameObject.board.buildings['b' + buildingNodeId];
+    return this.gameObject.board.buildings[buildingNodeId];
   }
   /**
    * @param {number} tileNodeId
    * Retrieving for data only, not for updating values 
    */
   getTileNode(tileNodeId) {
-    return this.gameObject.board.tiles['tile' + tileNodeId];
+    return this.gameObject.board.tiles[tileNodeId];
   }
 }

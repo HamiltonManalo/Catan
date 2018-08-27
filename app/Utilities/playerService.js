@@ -5,8 +5,11 @@ class playerService {
     }
 
    
-     //holder for player array
-
+        /**
+     * Adds the specified resource to players hand and saves game instance
+     * @param {number} resource 
+     * @param {number} playerId 
+     */
     addResource(resource, playerId) {
         this.playerArray = this.DBFunc.getPlayers();
         let index = this.playerArray.findIndex(player => player.id == playerId);
@@ -31,7 +34,11 @@ class playerService {
     
         this.DBFunc.savePlayers(this.playerArray);
     };
-
+    /**
+     * Removes the specified resource to players hand and saves game instance
+     * @param {number} resource 
+     * @param {number} playerId 
+     */
     removeResource(resource, playerId) {
         this.playerArray = this.DBFunc.getPlayers();
         let index = this.playerArray.findIndex(player => player.id == playerId);
@@ -55,6 +62,10 @@ class playerService {
         }
     
         this.DBFunc.savePlayers(this.playerArray);
+    }
+
+    DiscardHalf(playerId) {
+        
     }
 }
 

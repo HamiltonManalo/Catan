@@ -9,6 +9,18 @@ class Game {
         this._currentPlayersTurn = 0;
         this.buildingsOwned = [];
         this.socketId = '';
+        this.developmentCardDeck = [];
+        this.robberEvent = {
+            phase: 1,
+            eventOwnerId: 0,
+            active: true,
+            targets: null,
+            //Stores state about the hand being passed for validation.
+            hand:  [ 
+                {type: 'wood', id: 'card0'},
+                {type: 'ore', id: 'card1'}
+              ]
+        }
     }
         get round() {
             return Math.ceil(this.turn/this.players.length)

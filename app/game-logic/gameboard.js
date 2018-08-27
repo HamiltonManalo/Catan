@@ -66,25 +66,25 @@ function configuration (numRings) {
   ])
   // Hard coding chits for now
   this.chits = [
-    { payTo: [], value: 11, alpha: 'R', probability: '●●' },
-    { payTo: [], value: 3, alpha: 'Q', probability: '●●' },
-    { payTo: [], value: 6, alpha: 'P', probability: '●●●●●' },
-    { payTo: [], value: 5, alpha: 'O', probability: '●●●●' },
-    { payTo: [], value: 4, alpha: 'N', probability: '●●●' },
-    { payTo: [], value: 9, alpha: 'M', probability: '●●●●' },
-    { payTo: [], value: 10, alpha: 'L', probability: '●●●' },
-    { payTo: [], value: 8, alpha: 'K', probability: '●●●●●' },
-    { payTo: [], value: 4, alpha: 'J', probability: '●●●' },
-    { payTo: [], value: 11, alpha: 'I', probability: '●●' },
-    { payTo: [], value: 12, alpha: 'H', probability: '●' },
-    { payTo: [], value: 9, alpha: 'G', probability: '●●●●' },
-    { payTo: [], value: 10, alpha: 'F', probability: '●●●' },
-    { payTo: [], value: 8, alpha: 'E', probability: '●●●●●' },
-    { payTo: [], value: 3, alpha: 'D', probability: '●●' },
-    { payTo: [], value: 6, alpha: 'C', probability: '●●●●●' },
-    { payTo: [], value: 2, alpha: 'B', probability: '●' },
-    { payTo: [], value: 5, alpha: 'A', probability: '●●●●' },
-    { payTo: [], value: '', alpha: '', probability: '' }
+    {value: 11, alpha: 'R', probability: '●●'   },
+    {value: 3, alpha: 'Q', probability: '●●'    },
+    {value: 6, alpha: 'P', probability: '●●●●●' },
+    {value: 5, alpha: 'O', probability: '●●●●'  },
+    {value: 4, alpha: 'N', probability: '●●●'   },
+    {value: 9, alpha: 'M', probability: '●●●●'  },
+    {value: 10, alpha: 'L', probability: '●●●'  },
+    {value: 8, alpha: 'K', probability: '●●●●●' },
+    {value: 4, alpha: 'J', probability: '●●●'   },
+    {value: 11, alpha: 'I', probability: '●●'   },
+    {value: 12, alpha: 'H', probability: '●'    },
+    {value: 9, alpha: 'G', probability: '●●●●'  },
+    {value: 10, alpha: 'F', probability: '●●●'  },
+    {value: 8, alpha: 'E', probability: '●●●●●' },
+    {value: 3, alpha: 'D', probability: '●●'    },
+    {value: 6, alpha: 'C', probability: '●●●●●' },
+    {value: 2, alpha: 'B', probability: '●'     },
+    {value: 5, alpha: 'A', probability: '●●●●'  },
+    {value: '', alpha: '', probability: ''      }
   ]
   // Keeping track of desert placement
   // Works because there is only 1 desert
@@ -143,9 +143,9 @@ class boardMaker {
     // Specify size of board in rings (min 3)
     this.config = new configuration(3)
     // Board Objects
-    this.tiles = {}
-    this.roads = {}
-    this.buildings = {}
+    this.tiles = [];
+    this.roads = [];
+    this.buildings = [];
     // Keeping track of counts
     this.numTiles = 0
     this.numRoads = 0
@@ -157,32 +157,10 @@ class boardMaker {
     // Initially gets assigned during board creation
     // when the desert tile is hit. This way the robber
     // begins assigned to the desert
-    this.robber = {}
+    this.robberTileLocationId;
   }
 }
-/*
-    ROBBER Prototype
-    ------------------------------------------------------
-*/
-function Robber (desertTile) {
-  // keeps track of robber's last updated location
-  this.location = desertTile
 
-  // Assigns new location to the robber
-  // Repositions robber visually
-  this.newLocation = function (tile) {
-    // Force robber to move to a new location
-    if (tile.id === this.location.id) {
-      console.error('Robber is already at that location')
-      return
-    } // Set new location of robber
-    this.location = tile
-    this.getElement().css({
-      bottom: tile.display.y,
-      right: tile.display.x
-    })
-  }
-}
 
 /*
     CHIT Prototype
@@ -233,8 +211,8 @@ function Tile (tileId) {
     this.display = new Coordinates(0, 0)
   } else {
     // Use X & Y of previous Tile to position this one
-    var prevX = gameBoard.tiles['tile' + (tileId - 1)].display.x
-    var prevY = gameBoard.tiles['tile' + (tileId - 1)].display.y
+    var prevX = gameBoard.tiles[tileId - 1].display.x
+    var prevY = gameBoard.tiles[tileId - 1].display.y
     var transformAngle = gameBoard.config.spiral()[tileId]
     // Calculate new X & Y
     var newXY = calcXYFromPrev(prevX, prevY, transformAngle)
@@ -248,7 +226,7 @@ function Tile (tileId) {
   }
   // Keep track of whether the desert has been placed or not
   if (this.resourceType === 'desert') {
-    gameBoard.robber = new Robber(this)
+    gameBoard.robberTileLocationId = this.id
     // gameBoard.robber.createDOMNode();
     gameBoard.config.desertHasBeenPlaced = true
   }
@@ -266,13 +244,9 @@ function Tile (tileId) {
   ) {
     this.chit = new Chit(this.id - 1)
   }
-  // function that returns corresponding dom node
-  this.getElement = function () {
-    return '.resource-tile[data-tile-id="' + tileId + '"]'
-  }
 
   // Add to gameBoard
-  gameBoard.tiles['tile' + this.id] = this
+  // gameBoard.tiles.push(this);
   // Set this to most recent
   gameBoard.mostRecentTile = this
   gameBoard.numTiles++
@@ -355,41 +329,6 @@ function Building (tileA, tileB, tileC) {
   tileA.buildings.push(this.id)
   tileB.buildings.push(this.id)
   tileC.buildings.push(this.id)
-  // function that returns corresponding dom node
-  this.getElement = function () {}
-  // function to change owner of building
-  this.newOwner = function (newOwner) {}
-  
-  // Truthy return to validate T0 playment conditions
-  this.build = function (player) {
-    if (player.settlements >= 15) {
-      console.log('you are out of settlements')
-      // break;
-    }
-    if (this.checkAdjacent() && this.owner == null) {
-      console.log('Built a home at  ' + this.id)
-      this.newOwner(player)
-      this.owner.settlements++
-      return true
-    } else {
-      console.log("You can't build here ya dumb ol' cunt")
-      return false
-    }
-  }
-  // function to upgrade to city
-  this.upgrade = function () {
-    if (this.owner === null) {
-      return
-    }
-    if (this.isCity === true) {
-
-    } else {
-      this.isCity = true
-      this.owner.settlements--
-      this.owner.cities++
-    }
-  }
-
   // increment total
 
   gameBoard.numBuildings++
@@ -403,55 +342,44 @@ var connectTiles = function (tileA, tileB) {
   if (tileA.resourceType === 'ocean' && tileB.resourceType === 'ocean') {
     // Do not create road if between two oceans
   } else {
-    gameBoard.roads['road' + gameBoard.numRoads] = new Road(tileA, tileB)
+    gameBoard.roads[gameBoard.numRoads] = new Road(tileA, tileB)
   }
 }
 
 // Adjacent Tile Builder
 var buildAdjacentOf = function (originTile) {
-  while (
-    originTile.adjacent.length < gameBoard.config.maxAdjacent &&
-    gameBoard.numTiles < gameBoard.config.maxTiles
-  ) {
+  while (originTile.adjacent.length < gameBoard.config.maxAdjacent && gameBoard.numTiles < gameBoard.config.maxTiles) {
     // Create next tile
-    gameBoard.tiles['tile' + gameBoard.numTiles] = new Tile(gameBoard.numTiles)
+    gameBoard.tiles.push(new Tile(gameBoard.numTiles))
     // Connect gameBoard.mostRecentTile to gameBoard.mostRecentTile -1
-    var prevTile = gameBoard.tiles['tile' + (gameBoard.mostRecentTile.id - 1)]
+    var prevTile = gameBoard.tiles[gameBoard.mostRecentTile.id - 1]
     connectTiles(gameBoard.mostRecentTile, prevTile)
     // Connect gameBoard.mostRecentTile to originTile
     connectTiles(gameBoard.mostRecentTile, originTile)
     // Create Building
-    gameBoard.buildings['b' + gameBoard.numBuildings] = new Building(
-      gameBoard.mostRecentTile,
-      prevTile,
-      originTile
-    )
+    gameBoard.buildings[gameBoard.numBuildings] = new Building(gameBoard.mostRecentTile, prevTile, originTile)
   }
   // Create final connection
-  var nextTile = gameBoard.tiles['tile' + (originTile.id + 1)]
+  var nextTile = gameBoard.tiles[originTile.id+1]
   connectTiles(gameBoard.mostRecentTile, nextTile)
   // Create building in closing triangle
-  gameBoard.buildings['b' + gameBoard.numBuildings] = new Building(
-    gameBoard.mostRecentTile,
-    nextTile,
-    originTile
-  )
+  gameBoard.buildings[gameBoard.numBuildings] = new Building(gameBoard.mostRecentTile, nextTile, originTile)
 }
 
 // There are 3 initial Tiles, enough for 1 triangle
 // Assumes gameBoard.numTiles = 0
 var generateInitialTiles = function () {
-  gameBoard.tiles['tile' + 0] = new Tile(0)
-  gameBoard.tiles['tile' + 1] = new Tile(1)
-  gameBoard.tiles['tile' + 2] = new Tile(2)
-  connectTiles(gameBoard.tiles['tile' + 0], gameBoard.tiles['tile' + 1])
-  connectTiles(gameBoard.tiles['tile' + 0], gameBoard.tiles['tile' + 2])
-  connectTiles(gameBoard.tiles['tile' + 1], gameBoard.tiles['tile' + 2])
+  gameBoard.tiles.push( new Tile(0))
+  gameBoard.tiles.push(new Tile(1))
+  gameBoard.tiles.push(new Tile(2))
+  connectTiles(gameBoard.tiles[0], gameBoard.tiles[1])
+  connectTiles(gameBoard.tiles[0], gameBoard.tiles[2])
+  connectTiles(gameBoard.tiles[1], gameBoard.tiles[2])
   // First building
-  gameBoard.buildings['b' + gameBoard.numBuildings] = new Building(
-    gameBoard.tiles['tile' + 0],
-    gameBoard.tiles['tile' + 1],
-    gameBoard.tiles['tile' + 2]
+  gameBoard.buildings[gameBoard.numBuildings] = new Building(
+    gameBoard.tiles[0],
+    gameBoard.tiles[1],
+    gameBoard.tiles[2]
   )
 }
 
@@ -460,7 +388,7 @@ var generateInitialTiles = function () {
 var generateTilesLoop = function () {
   var i = 0
   while (gameBoard.numTiles < gameBoard.config.maxTiles) {
-    var originTile = gameBoard.tiles['tile' + i]
+    var originTile = gameBoard.tiles[i]
     buildAdjacentOf(originTile)
     i++
   }
@@ -468,7 +396,7 @@ var generateTilesLoop = function () {
 
 // Handy Utility
 var getBuildingIdsFromResource = function (resourceId) {
-  let resource = gameBoard.tiles['tile' + resourceId]
+  let resource = gameBoard.tiles[resourceId]
   var buildingIds = []
   for (var i = 0; i < resource.buildings.length; i++) {
     buildingIds.push(resource.buildings[i])
@@ -511,29 +439,24 @@ var assignBuildingsToBuilding = function (building) {
 var assignBuildingsToBuildings = function () {
   var b = 0 // iterator
   while (b < gameBoard.numBuildings) {
-    var buildingObject = gameBoard.buildings['b' + b]
+    var buildingObject = gameBoard.buildings[b]
     assignBuildingsToBuilding(buildingObject)
     b++
   }
 }
 
 function bp (id) {
-  let path = gameBoard.buildings['b' + id]
+  let path = gameBoard.buildings[id]
   return path
 }
 
 function tp (id) {
-  let path = gameBoard.tiles['tile' + id]
-  return path
-}
-
-function bp (id) {
-  let path = gameBoard.buildings['b' + id]
+  let path = gameBoard.tiles[id]
   return path
 }
 
 function rp (id) {
-  let path = gameBoard.roads['road' + id]
+  let path = gameBoard.roads[id]
   return path
 }
 
@@ -550,7 +473,7 @@ var assignBuildingsToRoad = function (road) {
 var assignBuildingsToRoads = function () {
   var r = 0 // iterator
   while (r < gameBoard.numRoads) {
-    assignBuildingsToRoad(gameBoard.roads['road' + r])
+    assignBuildingsToRoad(gameBoard.roads[r])
     r++
   }
 }
@@ -559,7 +482,7 @@ var assignBuildingsToRoads = function () {
 var getRoadByTiles = function (tileA, tileB) {
   var r = 0
   while (r < gameBoard.numRoads) {
-    var road = gameBoard.roads['road' + r]
+    var road = gameBoard.roads[r]
     if (
       gameBoard.road.tiles[0].id === tileA.id &&
       gameBoard.road.tiles[1].id === tileB.id
@@ -588,7 +511,7 @@ var assignRoadsToRoad = function (originRoad) {
 // Run the above on all roads
 var assignRoadsToRoads = function () {
   for (var r = 0; r < gameBoard.numRoads; r++) {
-    assignRoadsToRoad(gameBoard.roads['road' + r])
+    assignRoadsToRoad(gameBoard.roads[r])
   }
 }
 var gameBoard;
@@ -607,7 +530,7 @@ function generateBoard () {
 
   // Assign 4 adjacent roads to each road
   assignRoadsToRoads()
-
+  
   console.log('--------------------------------------')
   console.log('Gameboard Generated')
   console.log('--------------------------------------')

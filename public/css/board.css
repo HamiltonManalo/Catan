@@ -14,6 +14,8 @@ body * {
 }
 
 /* End button and such stylings*/
+
+
 #player-options  {
   position: absolute;
   right: 5%;
@@ -114,6 +116,87 @@ body * {
   background-color: brown;
   border-style: solid;
   border-width: 2px;
+}
+/* Card Styles */
+#cardbox-box-show {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background-color: #fff;
+  width: 60%;
+  height: 40%;
+  /* padding: 30px; */
+  text-align: center;
+  color: #666;
+  border-radius: 5px;
+  z-index: 20;
+}
+#cardbox-box-show h2 {
+  margin: 10px;
+  text-align: bottom;
+}
+#cardDiv {
+  height: 85%;
+  width:100%;
+  display: inline;
+}
+.card {
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  height: 65%;
+  width:23%; 
+  display: inline-block;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 90px;  
+  margin: 5px 5px 5px 5px;
+  cursor: pointer;
+}
+
+.card.wood {
+  background: rgb(82, 47, 19);
+}
+
+.card.wheat {
+  background-color: rgb(255, 187, 0);
+}
+
+.card.sheep {
+  background-color: beige;
+}
+
+.card.ore {
+  background-color: gray;
+}
+
+.card.brick {
+  background-color: brown;
+}
+.card.facedown {
+  background-color: rgba(165, 42, 42, 0.603);
+}
+/* This is to show selection */
+.card.selected {
+   box-shadow: 0 0 3pt 2pt turquoise;
+   
+}
+
+/* playerColors */
+.player0 {
+  background-color: #ff0000;
+}
+.player1 {
+  background-color: #00ff00;
+}
+.player2 {
+  background-color: #0000ff;
+}
+.player4 {
+  background-color: #ff7700;
 }
 
 /* Debugger Styles */
@@ -634,7 +717,7 @@ body * {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #000;
+  background-color: #000;  
 }
 .building {
   position: absolute;
@@ -733,6 +816,10 @@ body * {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: 100% 100%;
+}
+
+.resource-tile.selectable {
+  cursor: pointer;
 }
 .resource-desert {
   background-image: url(../img/resource-tile-desert.svg);
