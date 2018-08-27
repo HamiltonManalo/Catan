@@ -63,6 +63,10 @@ class playerService {
     
         this.DBFunc.savePlayers(this.playerArray);
     }
+
+    DiscardHalf(playerId) {
+        
+    }
 }
 
 module.exports = playerService; 

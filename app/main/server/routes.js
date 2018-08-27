@@ -8,24 +8,27 @@ const state = require('../../../gbstate.json');
 const validator = require('./../../game-logic/validators');
 const sockets = require('../index')
 const debug = require('./../../Utilities/debug');
+const io = require('./sockets');
+//needs better naming, but thats how you get an instance. 
+let socket = io.io;
 ///////////////////////////////////////////////////////////////////////////
 //                         serves game page								 //
 ///////////////////////////////////////////////////////////////////////////
 app.use(express.static(paths.join(__dirname, '../../../public/')));
 
-app.get('/game', function(req, res){ 
+app.get('/game', (req, res) => { 
     res.sendFile(paths.join(__dirname, '../../../public/', 'index.html'));
 });
 
-app.get('/',function(req, res){
+app.get('/',(req, res) => {
     res.sendFile(paths.join(__dirname, '../../../public/', 'login.html'));
 });
 
-app.get('/newUser', function(req, res){
+app.get('/newUser', (req, res) => {
     res.sendFile(paths.join(__dirname, '../../../public/', 'newUser.html'));
 });
 
-app.get('/getUser', function(req, res){ 
+app.get('/getUser', (req, res) => { 
     let existingUsers = db.getPlayers();
     if(!existingUsers[0]) {
 
@@ -44,16 +47,16 @@ app.get('/getUser', function(req, res){
     }
     });
 
-app.get('/generateBoard', function(req, res){
+app.get('/generateBoard', (req, res) => {
    
-    // var board = generator.generateBoard();
-    // db.saveGameboard(board);
-    // res.status(200);
-    // res.json(db.getGameObject());
-    let gameState = debug.makeState(state);
-    db.saveGameObject(gameState);
+    var board = generator.generateBoard();
+    db.saveGameboard(board);
     res.status(200);
-    res.json(gameState);
+    res.json(db.getGameObject());
+    // let gameState = debug.makeState(state);
+    // db.saveGameObject(gameState);
+    // res.status(200);
+    // res.json(gameState);
 });
 /********************************************
 **The data will look like                  **
@@ -61,7 +64,7 @@ app.get('/generateBoard', function(req, res){
 **  'confirmation: True}                   **
 *********************************************/
 let jsonParser = bodyParser.json();
-app.post('/confirmBuild', jsonParser, function(req, res) {
+app.post('/confirmBuild', jsonParser, (req, res) => {
    
     let service = generator.gameboardService();
     let data = req.body;
@@ -93,7 +96,7 @@ app.post('/confirmBuild', jsonParser, function(req, res) {
     }
 });
 
-app.post('/endTurn', jsonParser, function(req, res) {
+app.post('/endTurn', jsonParser, (req, res) => {
     let game = db.getGameObject();
     if(game == null || game.players.length == 0)
         return;
@@ -113,8 +116,57 @@ app.post('/endTurn', jsonParser, function(req, res) {
     }
 });
 
-app.get('/roll', jsonParser, function(req, res) { 
+app.get('/roll', jsonParser, (req, res) => { 
 
+})
+
+app.post('/placeRobber', jsonParser, (req, res) => {
+    let game = db.getGameObject();
+    let eventService = generator.eventService(); 
+    if(req.body.playerId != game.currentPlayersTurn || !game.robberEvent.active 
+        || game.robberEvent.playerId != req.body.playerId)
+        return;
+    //implement logic to steal from other players...now
+    let playersToRob = eventService.RobberPlacedEvent(req.tileNodeId); 
+    res.json(playersToRob);
+
+});
+/* data looks like
+    { 
+        playerSendingId: 3,
+        targetPlayerId: 1
+    }
+
+*/
+/**
+ * Takes in players selection to steal from and returns 
+ */
+app.post('/selectTarget', jsonParser, (req, res) => {
+    let game = db.getGameObject();
+    if(req.body.playerSendingId != game.robberEvent.eventOwnerId)
+        return;
+    let eventService = generator.eventService();
+    let dataObject = eventService.StealFromHand(req.body.playerSendingId, req.body.targetPlayerId);
+    res.json(dataObject);
+
+})
+/* data looks like
+    {
+        sendingPlayerId: 3,
+        targetPlayerId: 1,
+        resource: wood
+    }
+*/
+app.post('/takeCard', jsonParser, (req, res) => {
+//     if(req.body.playerSendingId != game.robberEvent.eventOwnerId)
+//     return;
+    
+    let eventService = generator.eventService();
+    eventService.RobCard(req.body.playerSendingId, req.body.targetPlayerId, req.body.cardId);
+
+    let game = db.getGameObject();
+    res.json(game);
+    //Put in emits here to update other players clients, need to emit to robbed, robber and general emit to all other clients if players > 2. 
 })
 
 module.exports = app;

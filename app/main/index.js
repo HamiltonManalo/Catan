@@ -8,7 +8,12 @@ let sockets = socketio.listen(server);
 app.io = sockets;
 const socket = io.start(sockets);
 
-module.exports.io = sockets;
+module.exports.io = function() {
+  if(sockets) 
+  return sockets;
+  else
+  return
+}
 
 
 

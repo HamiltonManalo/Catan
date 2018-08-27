@@ -27,6 +27,7 @@ function startGame (gameBoard) {
     gameState.players = JSON.parse(users);
     CurrentPlayer = gameState.players.find(player => player.activePlayer == true);
     setPanels(CurrentPlayer.id);
+    updateResources(CurrentPlayer);
   });
 }
 
@@ -40,7 +41,12 @@ function httpRequest (url, callback) {
   http.open('GET', url, true)
   http.send()
 }
-
+/**
+ * 
+ * @param {string} url 
+ * @param {object} data 
+ * @param {function} callback 
+ */
 function httpPost (url, data, callback) {
   var http = new XMLHttpRequest()
 
@@ -58,23 +64,30 @@ function httpPost (url, data, callback) {
   http.send(JSON.stringify(data))
 }
 
-function buildRoad (target) {
-  
+function buildRoad (event) {
+  if(event.detail > 1)
+    return;
+  let road = event.currentTarget.dataset
   let dataObject = {
-    playerId: this.CurrentPlayer.id,
+    playerId: CurrentPlayer.id,
     buildingType: 'road',
-    nodeId: target
+    nodeId: Number(road.roadId)
   }
   socket.emit('validatePlaceAction', dataObject)
 }
 
-function buildSettlement (target, player) {
+
+function buildSettlement (event) {
+  if(event.detail > 1)
+    return;
+  let building = event.currentTarget.dataset; 
   let dataObject = {
-    playerId: this.CurrentPlayer.id,
+    playerId: CurrentPlayer.id,
     buildingType: 'settlement',
-    nodeId: target
+    nodeId: Number(building.buildingId)
   }
-  if(gameBoard.buildings[target].owner != null && CurrentPlayer.id === gameBoard.buildings[target].owner)
+
+  if(building.owner && CurrentPlayer.id === gameBoard.buildings[building.buildingId].owner)
     dataObject.buildingType = 'city'
   socket.emit('validatePlaceAction', dataObject)
 }
@@ -95,4 +108,88 @@ function updateResources(playerObject) {
       resourceNodes[i].children[1].innerText = newResourceValues[propertyName];
     }
   }
+}
+//Event function to allow users to move robber during gameplay
+
+function moveRobber(event) {
+  if(event.detail > 1) 
+    return;
+  
+  let tiles = document.querySelectorAll('.resource-tile');
+
+  if(!tiles[0] || !tiles[0].classList.contains('selectable'))
+    return;
+  if(!gameState.robberEvent.active || CurrentPlayer.id != gameState.robberEvent.eventOwnerId) 
+    return;
+
+  let robber = document.getElementById('robber')
+  robber.style.cssText = event.currentTarget.style.cssText;
+  gameState.board.robberTileLocationId = event.currentTarget.dataset.tileId;
+  for(let i = 0; i < tiles.length; i++) 
+    tiles[i].classList.remove('selectable')
+  let dataObject = {
+    tileNodeId: Number(event.currentTarget.dataset.tileId)
+  }
+    httpPost('http://localhost:8080/placeRobber', dataObject, response => {
+      cardBox(response);
+    })
+}
+
+function confirmPlayerToStealFrom(event) {
+  let selectedPlayer = document.querySelector('.selected')
+  if(selectedPlayer.id === CurrentPlayer)
+    return;
+
+  let dataObject = { 
+    playerSendingId: CurrentPlayer.id,
+    targetPlayerId: Number(selectedPlayer.id)
+  }
+    //get rid of box 
+    let parent = event.srcElement.offsetParent;
+    parent.id = 'dialog-box-hidden';
+    parent.innerHTML = null;
+
+    httpPost('http://localhost:8080/selectTarget', dataObject, updateData =>{
+      let responseObject = JSON.parse(updateData);
+     
+      cardBox(responseObject);
+     });
+}
+
+function confirmCardToSteal(event) {
+  let selectedCard = document.querySelector('.selected');
+  if(!selectedCard) 
+    return;
+  let parent = event.srcElement.offsetParent;
+  parent.id = 'dialog-box-hidden';
+  parent.innerHTML = null;
+  console.log('you have submitted a choice. Good job');
+  let dataObject = {
+    playerSendingId : CurrentPlayer.id,
+    targetPlayerId: 1,
+    cardId: Number(selectedCard.id)
+  }
+  httpPost('http://localhost:8080/takeCard', dataObject, updateData =>{
+     let updatedState = JSON.parse(updateData);
+     let playerUpdate = updatedState.players.find(player => player.id === CurrentPlayer.id)
+     updateResources(playerUpdate);
+    });
+  
+}
+//gameboard function to place robber at start of game
+function placeRobber(tileNodeId) {
+  // if(targetNode > gameBoard.tiles.length || gameState.debuggerEnabled != true)
+  //   return;
+  let tile = document.querySelector(`div[data-tile-id='${tileNodeId}']`);
+  
+  let robber = document.getElementById('robber')
+
+  if(!robber)
+    robber = document.createElement('div');
+  let origin = document.getElementById('origin');
+  robber.classList.add('robber');
+  robber.style.cssText = tile.style.cssText;
+  robber.setAttribute('id','robber');
+  origin.appendChild(robber)
+  gameState.board.robberTileLocationId = tileNodeId;
 }

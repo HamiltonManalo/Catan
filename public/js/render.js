@@ -11,7 +11,7 @@ function generateBoardHTML (state) {
   renderTiles();
   renderRoads();
   renderBuildings();
-
+  placeRobber(gameBoard.robberTileLocationId);
   console.log('--------------------------------------');
   console.log('Gameboard Generated');
   console.log('--------------------------------------');
@@ -30,7 +30,7 @@ var renderRoads = function () {
     node.style.right = roadObject.display.x + 'px';
     node.setAttribute('data-owner', roadObject.owner)
     node.setAttribute('data-road-id', roadObject.id);
-    node.addEventListener('click', buildRoad.bind(null, r)
+    node.addEventListener('click', buildRoad
   );
     origin.appendChild(node)
 
@@ -52,7 +52,7 @@ var renderBuildings = function () {
     node.style.right = buildingObject.display.x + 'px';
     node.setAttribute('data-building-id', buildingObject.id);
     node.setAttribute('data-owner', buildingObject.owner)
-    node.addEventListener('click',buildSettlement.bind(null, b));
+    node.addEventListener('click',buildSettlement);
     origin.appendChild(node)
 
     b++;
@@ -89,7 +89,7 @@ var renderTiles = function () {
       chitProbability.className = 'chit-probability';
       chitProbability.innerText = tileObject.chit.probability;
       newTile.append(chitAlpha, chitValue, chitProbability);
-
+      newTile.addEventListener('click', moveRobber);
       if (tileObject.chit.value === 6 || tileObject.chit.value === 8) {
         newTile.classList.add('resource-hot');
       }

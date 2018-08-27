@@ -93,6 +93,14 @@ let validatePlayerCanPlaceCity = function(gameObject, buildingNodeId, playerId){
   return false;
   
 }
+
+let validateRobberCanBeMoved = function(tileNodeId, gameObject) {
+  if(gameObject.robberTileLocationId === tileNodeId) 
+    return false;
+  else 
+    return true;
+  
+}
 /** ***************************
 *                            *
 *    Resource Verfication    *
@@ -155,3 +163,4 @@ let _validatePlacementRoundsComplete = function (gameObject, playerObject) {
 exports.validateRoad = validatePlayerCanPlaceRoad;
 exports.validateBuilding = validatePlayerCanPlaceBuilding;
 exports.validateCity = validatePlayerCanPlaceCity;
+exports = validateRobberMove = validateRobberCanBeMoved;

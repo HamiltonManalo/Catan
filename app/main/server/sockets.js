@@ -2,10 +2,8 @@ const validator = require('./../../game-logic/validators.js');
 const db = require('../../database/dbMock');
 // const io = require('../index').socket;
 const generator = require('../../Utilities/generators');
-var sockets;
 module.exports = {
   start: function (io) {
-      sockets = io;
     io.on('connection', function (socket) {
       this.io = socket;
       socket.on('validatePlaceAction', function (data) {
@@ -37,13 +35,28 @@ module.exports = {
             socket.emit('placeActionResult', false);
             console.log('cant build ' + data.buildingType);
         }
+       
       });
       
-        
+      socket.on('moveRobber', tileNodeId => {
+          let gameObject = db.getGameObject();
+          let canMoveResult = validator.validateCanMoveRobber(tileNodeId, gameObject)
+          if(canMoveResult) {
+              socket.emit('robberActionResult', true);
+          } else {
+              socket.emit('robberActionResult', false);
+          }
+      })
+
+      socket.on('disconnect', () => {
+        let gameObject = db.getGameObject();
+        gameObject.socketId = null;
+        db.saveGameObject(gameObject);
+    })
+    
       // New events above this line \\
     }.bind(this));
+    return io;
 },
-io: null,
-io2: sockets
+io: null
 };
-console.log(sockets);

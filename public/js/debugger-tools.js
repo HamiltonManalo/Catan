@@ -4,21 +4,7 @@
     Called from gameBoard.generate();
 */
 
-function moveRobber(targetNode) {
-  if(targetNode > gameBoard.tiles.length || gameState.debuggerEnabled != true)
-    return;
-  let tile = document.querySelector(`div[data-tile-id='${targetNode}']`);
-  let robber = document.getElementById('robber')
-  if(!robber)
-    robber = document.createElement('div');
-  let origin = document.getElementById('origin');
-  robber.classList.add('robber');
-  robber.style = tile.style
-  // robber.style.left = tile.style.left != "" ? tile.style.left : '';
-  // robber.style.right = tile.style.right != '' ? tile.style.right : '';
-  robber.setAttribute('id','robber');
-  origin.appendChild(robber)
-}
+
 function debugTest() {
 
   socket.emit('debug', 'test')

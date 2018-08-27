@@ -1,6 +1,12 @@
 const gameClass = require('../game-logic/gameClass')
+const socket = require('./../main/server/sockets')
+
+
 
 function consumeJsonState(Json) {
+    let io = socket.io;
+
+    io.emit('consuming', 'consuming json')
     let state;
     let gameState;
     try{

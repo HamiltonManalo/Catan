@@ -67,6 +67,9 @@ Public methods which will be exposed to perform actual changes on the board
     return this.gameObject.players[playerIndex]; // return true if save was successful. Return false if failure
   }
 
+  moveRobber(tileNodeId) {
+    this.gameObject.robberTileLocationId = tileNodeId; 
+  }
 
 /**
  * @param {number} roadId

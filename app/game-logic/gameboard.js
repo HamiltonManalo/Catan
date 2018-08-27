@@ -157,32 +157,10 @@ class boardMaker {
     // Initially gets assigned during board creation
     // when the desert tile is hit. This way the robber
     // begins assigned to the desert
-    this.robber = {}
+    this.robberTileLocationId;
   }
 }
-/*
-    ROBBER Prototype
-    ------------------------------------------------------
-*/
-function Robber (desertTile) {
-  // keeps track of robber's last updated location
-  this.location = desertTile
 
-  // Assigns new location to the robber
-  // Repositions robber visually
-  this.newLocation = function (tile) {
-    // Force robber to move to a new location
-    if (tile.id === this.location.id) {
-      console.error('Robber is already at that location')
-      return
-    } // Set new location of robber
-    this.location = tile
-    this.getElement().css({
-      bottom: tile.display.y,
-      right: tile.display.x
-    })
-  }
-}
 
 /*
     CHIT Prototype
@@ -248,7 +226,7 @@ function Tile (tileId) {
   }
   // Keep track of whether the desert has been placed or not
   if (this.resourceType === 'desert') {
-    gameBoard.robber = new Robber(this)
+    gameBoard.robberTileLocationId = this.id
     // gameBoard.robber.createDOMNode();
     gameBoard.config.desertHasBeenPlaced = true
   }
@@ -552,7 +530,7 @@ function generateBoard () {
 
   // Assign 4 adjacent roads to each road
   assignRoadsToRoads()
-
+  
   console.log('--------------------------------------')
   console.log('Gameboard Generated')
   console.log('--------------------------------------')
